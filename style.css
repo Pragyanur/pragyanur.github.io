@@ -60,3 +60,7 @@ html {
     background-color: rgb(247, 228, 255);
     color: rgb(76, 49, 88);
 }
+
+#list li {
+    list-style: none;
+}
