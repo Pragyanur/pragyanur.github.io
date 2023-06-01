@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html>
+
+<head>
+    <title>India map locations</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="header">INDIA MAP AND LOCATIONS</header>
+
+    <div class="container">
+
+        <div id="map-container">
+            <div id="marker"><img src="pin.png" alt="pin" width="25"></div>
+            <div><img src="map.png" alt="india map" width="500" id="map"></div>
+        </div>
+
+        <div id="search-section" class="box">
+            <div>
+                <h1>Search for your favourite metro-city</h1>
+            </div>
+            <div id="input">
+                <input type="text" id="location-input" list="locations" placeholder="Enter a location">
+                <datalist id="locations">
+                    <option value="delhi">Delhi</option>
+                    <option value="mumbai">Mumbai</option>
+                    <option value="bangalore">Bangalore</option>
+                    <option value="chennai">Chennai</option>
+                    <option value="kolkata">Kolkata</option>
+                </datalist>
+            </div>
+        </div>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
