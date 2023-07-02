@@ -1,0 +1,120 @@
+* {
+    box-sizing: border-boxc;
+    color: rgb(255, 255, 255);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: rgb(0, 0, 0);
+    overflow-y: hidden;
+}
+
+.header {
+    position: fixed;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+
+.fixed {
+    padding: 10px 20px;
+    border: 3px rgb(255, 255, 255) solid;
+    border-radius: 10px;
+    background-color: rgb(93, 93, 93);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.LOGO {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.699);
+    border: 3px solid white;
+}
+
+.LOGO:hover {
+
+}
+
+.footer {
+    position: fixed;
+    bottom: 5%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+
+
+a {
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+a:hover {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    transition: 0.3s;
+}
+
+.container {
+    display: flex;
+}
+
+.section {
+    flex: 1;
+    display: flex;
+    margin: 10px;
+    border-radius: 30px;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 95vh;
+}
+
+h1,
+h4 {
+    color: rgb(174, 174, 174);
+    transition: 0.5s;
+    padding: 10px;
+}
+
+h1:hover, h4:hover {
+    color: white;
+    transition: 0.5s;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/*IMAGES TO THE BACKGROUND*/
+
+#art {
+    background-image: url("ARTbw.jpg");
+    background-blend-mode: overlay;
+    background-color: rgba(0, 0, 0, 0.689);
+    background-size: cover;
+    background-position: center;
+    transition: background-image 0.5s ease;
+}
+
+#art:hover {
+    background-image: url("ARTcolored.jpg");
+}
+
+#code {
+    background-image: url("CODEbw.jpg");
+    background-blend-mode: overlay;
+    background-color: rgba(0, 0, 0, 0.382);
+    background-size: cover;
+    background-position: center;
+    transition: background-image 0.5s ease;
+}
+
+#code:hover {
+    background-image: url("CODEcolored.jpg");
+}
+
+#title {
+    background-image: url("backgroundGIF.gif");
+}
+
+#contact {
+    background-image: url("backgroundGIF.gif");
+}
