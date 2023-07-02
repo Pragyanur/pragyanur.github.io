@@ -5,8 +5,9 @@
 }
 
 body {
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
     overflow-y: hidden;
+    margin: 1.5px;
 }
 
 .header {
@@ -19,7 +20,7 @@ body {
 .fixed {
     padding: 10px 20px;
     border: 3px rgb(255, 255, 255) solid;
-    border-radius: 10px;
+    border-radius: 20px;
     background-color: rgb(93, 93, 93);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
@@ -32,10 +33,6 @@ body {
     border-radius: 50%;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.699);
     border: 3px solid white;
-}
-
-.LOGO:hover {
-
 }
 
 .footer {
@@ -63,11 +60,10 @@ a:hover {
 .section {
     flex: 1;
     display: flex;
-    margin: 10px;
-    border-radius: 30px;
+    margin: 1.5px;
     justify-content: space-evenly;
     align-items: center;
-    height: 95vh;
+    height: 99.1vh;
 }
 
 h1,
@@ -86,35 +82,48 @@ h1:hover, h4:hover {
 /*IMAGES TO THE BACKGROUND*/
 
 #art {
-    background-image: url("ARTbw.jpg");
+    background-image: url("store/ARTbw.jpg");
     background-blend-mode: overlay;
-    background-color: rgba(0, 0, 0, 0.689);
+    background-color: rgba(0, 0, 0, 0.671);
     background-size: cover;
     background-position: center;
     transition: background-image 0.5s ease;
 }
 
 #art:hover {
-    background-image: url("ARTcolored.jpg");
+    background-image: url("store/ARTcolored.jpg");
 }
 
 #code {
-    background-image: url("CODEbw.jpg");
+    background-image: url("store/CODEbw.jpg");
     background-blend-mode: overlay;
-    background-color: rgba(0, 0, 0, 0.382);
+    background-color: rgba(0, 0, 0, 0.486);
     background-size: cover;
-    background-position: center;
+    background-position: top;
     transition: background-image 0.5s ease;
 }
 
 #code:hover {
-    background-image: url("CODEcolored.jpg");
+    background-image: url("store/CODEcolored.jpg");
 }
 
 #title {
-    background-image: url("backgroundGIF.gif");
+    background-image: url("store/backgroundGIF.gif");
+    background-position: top;
+    transition: background-position 0.5s ease;
+    backdrop-filter: blur(5px);
+}
+
+#title:hover {
+    background-position: bottom;
 }
 
 #contact {
-    background-image: url("backgroundGIF.gif");
+    background-image: url("store/backgroundGIF.gif");
+    background-position: top;
+    transition: background-position 0.5s ease;
+}
+
+#contact:hover {
+    background-position: bottom;
 }
