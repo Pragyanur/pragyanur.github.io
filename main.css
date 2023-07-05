@@ -22,7 +22,7 @@ body {
     border: 3px rgb(255, 255, 255) solid;
     border-radius: 20px;
     background-color: rgb(93, 93, 93);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
 }
 
 .LOGO {
@@ -31,7 +31,7 @@ body {
     top: 50%;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.699);
+    /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.699); */
     border: 3px solid white;
 }
 
