@@ -7,5 +7,6 @@ function setup() {
 }
 
 function draw() {
-    
+    textSize(50);
+    text("BRAVE NEW WORLD", width / 2, height / 2);
 }
