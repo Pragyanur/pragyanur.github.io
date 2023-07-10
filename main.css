@@ -74,7 +74,8 @@ h4 {
     padding: 10px;
 }
 
-h1:hover, h4:hover {
+h1:hover,
+h4:hover {
     color: white;
     transition: 0.5s;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
