@@ -34,7 +34,6 @@ body {
     border-radius: 50%;
     /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.699); */
     border: 3px solid white;
-    background-image: url("../store/logo.jpeg");
 }
 
 .footer {
