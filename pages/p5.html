@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="../scripts/p5.js"></script>
     <title>p5 page</title>
 </head>
+
 <body style="overflow: hidden;">
-    <div style="color: rgb(0, 0, 0);background-color: rgba(255, 255, 255, 0.644); position: fixed; top: 3%; left: 50%; padding: 10px; border-radius: 2dvh; transform: translate(-50%,0%);">p5 demo</div>
-    <script src="../scripts/sketch-01.js"></script>
+    <div
+        style="color: rgb(0, 0, 0);background-color: rgba(255, 255, 255, 0.644); position: fixed; top: 3%; left: 50%; padding: 10px; border-radius: 2dvh; transform: translate(-50%,0%);">
+        p5 demo</div>
+    <!-- <script src="../scripts/sketch-01.js"></script> -->
+
+    <select onChange="getData(this.value);">
+        <option value="s1">Bubbles</option>
+        <option value="s2">Bouncing Balls</option>
+        <option value="en">Engleza</option>
+    </select>
+    <script src="../scripts/script.js"></script>
+    <div id="output"></div>
 </body>
+
 </html>

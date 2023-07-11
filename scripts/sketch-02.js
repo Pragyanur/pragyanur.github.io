@@ -1,25 +1,27 @@
-let canvas;
+let canvas2;
 let numberOfBalls = 25;
 
 balls = [numberOfBalls];
 let ballsCounter = 0;
+const diameter = 70;
 
 class BouncingBall {
     constructor(posX, posY) {
         this.x = posX;
         this.y = posY;
-        this.direction = 1;
-        this.displacement = 1;
-        this.velocity = 0.5;
-        this.ground = height * 5 / 6;
-        this.damping = 1.1;
+        this.direction = 1;                             // +1 or -1
+        this.displacement = 1;                          // vertical displacement between the pixels
+        this.velocity = 0.5;                            // multiplier
+        this.ground = height * 5 / 6;                   // imaginary ground
+        this.damping = 1.1;                             // damping factor/friction
+        this.bounceEffect = 1;                          // simulate compression
     }
 
     show() {
         fill(200, 0, 50);
         stroke(0);
         strokeWeight(1);
-        ellipse(this.x, this.y, 30);
+        ellipse(this.x, this.y, diameter, this.bounceEffect * diameter);
     }
 
     move() {
@@ -28,7 +30,7 @@ class BouncingBall {
 
     damp() {
         this.displacement /= this.damping;
-        this.damping += 0.01;     
+        this.damping += 0.01;
     }
 
     update() {
@@ -51,20 +53,20 @@ class BouncingBall {
 }
 
 function setup() {
-    canvas = createCanvas(windowWidth, windowHeight);
-    canvas.position(0, 0);
-    canvas.style('z-index', '-1');
+    canvas2 = createCanvas(windowWidth, windowHeight);
+    canvas2.position(0, 0);
+    canvas2.style('z-index', '-2');
 }
 
 function draw() {
     background(0, 0, 110);
     textSize(50);
-    text("Bouncing Balls", width / 2, height / 2);
+    fill(0);
+    text("Bouncing Balls: " + ballsCounter + "/25", width / 2 + 2, height / 2 + 2);             // shadow
+    fill(255);
+    text("Bouncing Balls: " + ballsCounter + "/25", width / 2, height / 2);                     // text
     landscape();
-
-
-
-    if (ballsCounter > 1) {
+    if (ballsCounter > 0) {
         for (i = 0; i < ballsCounter; i++) {
             balls[i].show();
             balls[i].update();
@@ -82,7 +84,6 @@ function landscape() {
 
 function mouseClicked() {
     if (ballsCounter < 25) {
-
         balls[ballsCounter] = new BouncingBall(mouseX, mouseY);
         ballsCounter++;
     }
