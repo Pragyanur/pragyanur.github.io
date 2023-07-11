@@ -5,6 +5,7 @@ balls = [numberOfBalls];
 let ballsCounter = 0;
 const diameter = 70;
 
+
 class BouncingBall {
     constructor(posX, posY) {
         this.x = posX;
@@ -68,19 +69,24 @@ function setup() {
 }
 
 function draw() {
-    const offset = width / 6; 
+    const offset = height / 4;
     background(40, 60, 110);
 
-    fill(0);
-    stroke(0);
+    fill(0, 200);
+    noStroke();
     strokeWeight(1);
-    textSize(40);
-    text("Bouncing Balls: " + ballsCounter + "/25", width / 2 + 2 - offset, height / 2 + 2);             // shadow
+    textSize(60);
+    text("Bouncing Balls: " + ballsCounter + "/25", width / 2 + 3, height / 2 + 3 + offset);             // shadow
+
+    fill(200, 0, 50);
+    stroke(0);
+    rect(width / 2 + 3, height / 2 + 205, 300 + ballsCounter * 11, 10);
+
     fill(255);
-    stroke(0);
-    strokeWeight(1);
-    textSize(40);
-    text("Bouncing Balls: " + ballsCounter + "/25", width / 2 - offset, height / 2);                     // text
+    textSize(60);
+    text("Bouncing Balls: " + ballsCounter + "/25", width / 2, height / 2 + offset);                     // text
+
+
 
     landscape();
 
@@ -95,13 +101,12 @@ function draw() {
 
 function landscape() {
     fill(255);
-    stroke(0);
-    strokeWeight(2);
+    noStroke(0);
     rect(0, height * 5 / 6, width, height / 6);
 }
 
 function mouseClicked() {
-    if (ballsCounter < 25 && mouseX > 20 && mouseX < width - 20 && mouseY > 20 && mouseY < height -20) {
+    if (ballsCounter < 25 && mouseX > 20 && mouseX < width - 20 && mouseY > 20 && mouseY < height - 20) {
         balls[ballsCounter] = new BouncingBall(mouseX, mouseY);
         ballsCounter++;
     }
