@@ -14,14 +14,15 @@ class BouncingBall {
         this.velocity = 0.5;                            // multiplier
         this.ground = height * 5 / 6;                   // imaginary ground
         this.damping = 1.1;                             // damping factor/friction
-        this.bounceEffect = 1;                          // simulate compression
     }
 
     show() {
+        // shadow
+
         fill(200, 0, 50);
         stroke(0);
         strokeWeight(1);
-        ellipse(this.x, this.y, diameter, this.bounceEffect * diameter);
+        circle(this.x, this.y, diameter);
     }
 
     move() {
@@ -36,7 +37,7 @@ class BouncingBall {
     update() {
         this.displacement += this.velocity;
         this.displacement *= this.direction;
-        
+
         if (this.y > this.ground && this.velocity > 0) {
             this.y = this.ground;
             this.direction = -this.direction;
@@ -55,16 +56,17 @@ class BouncingBall {
 function setup() {
     canvas2 = createCanvas(windowWidth, windowHeight);
     canvas2.position(0, 0);
-    canvas2.style('z-index', '-2');
+    canvas2.style('z-index', '-1');
 }
 
 function draw() {
-    background(0, 0, 110);
-    textSize(50);
+    background(40, 60, 110);
+    textSize(40);
     fill(0);
-    text("Bouncing Balls: " + ballsCounter + "/25", width / 2 + 2, height / 2 + 2);             // shadow
+    const offset = width / 6; 
+    text("Bouncing Balls: " + ballsCounter + "/25", width / 2 + 2 - offset, height / 2 + 2);             // shadow
     fill(255);
-    text("Bouncing Balls: " + ballsCounter + "/25", width / 2, height / 2);                     // text
+    text("Bouncing Balls: " + ballsCounter + "/25", width / 2 - offset, height / 2);                     // text
     landscape();
     if (ballsCounter > 0) {
         for (i = 0; i < ballsCounter; i++) {
@@ -83,7 +85,7 @@ function landscape() {
 }
 
 function mouseClicked() {
-    if (ballsCounter < 25) {
+    if (ballsCounter < 25 && mouseX > 20 && mouseX < width - 20 && mouseY > 20 && mouseY < height -20) {
         balls[ballsCounter] = new BouncingBall(mouseX, mouseY);
         ballsCounter++;
     }
