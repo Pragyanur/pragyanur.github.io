@@ -3,11 +3,6 @@ let numberOfBalls = 25;
 
 balls = [numberOfBalls];
 let ballsCounter = 0;
-// Load the code from the GitHub repository
-const code = require('https://github.com/Pragyanur/pragyanur.github.io/blob/main/scripts/sketch-02.js');
-
-// Display the code in the HTML
-document.getElementById('code').innerHTML = code;
 
 class BouncingBall {
     constructor(posX, posY) {
@@ -33,18 +28,18 @@ class BouncingBall {
 
     damp() {
         this.displacement /= this.damping;
-        this.damping += 0.01;
+        this.damping += 0.01;     
     }
 
     update() {
         this.displacement += this.velocity;
         this.displacement *= this.direction;
-
+        
         if (this.y > this.ground && this.velocity > 0) {
             this.y = this.ground;
             this.direction = -this.direction;
             this.damp();
-            if (this.displacement > -0.5 && this.displacement < 0.5) {
+            if (this.displacement > -1 && this.displacement < 1) {
                 this.y = this.ground;
                 this.velocity = 0;
                 this.displacement = 0;
@@ -69,7 +64,7 @@ function draw() {
 
 
 
-    if (ballsCounter > -1) {
+    if (ballsCounter > 1) {
         for (i = 0; i < ballsCounter; i++) {
             balls[i].show();
             balls[i].update();
@@ -82,11 +77,12 @@ function landscape() {
     fill(255);
     stroke(0);
     strokeWeight(2);
-    rect(0, height * 5 / 6 + 15, width, height / 6);
+    rect(0, height * 5 / 6, width, height / 6);
 }
 
 function mouseClicked() {
     if (ballsCounter < 25) {
+
         balls[ballsCounter] = new BouncingBall(mouseX, mouseY);
         ballsCounter++;
     }
