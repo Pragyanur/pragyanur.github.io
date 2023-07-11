@@ -4,7 +4,7 @@ let numberOfBalls = 25;
 balls = [numberOfBalls];
 let ballsCounter = 0;
 // Load the code from the GitHub repository
-const code = require('https://raw.githubusercontent.com/<username>/<repo>/master/<file>');
+const code = require('https://github.com/Pragyanur/pragyanur.github.io/blob/main/scripts/sketch-02.js');
 
 // Display the code in the HTML
 document.getElementById('code').innerHTML = code;
