@@ -23,6 +23,15 @@ class BouncingBall {
         stroke(0);
         strokeWeight(1);
         circle(this.x, this.y, diameter);
+        stroke(255, 150);
+        strokeWeight(10);
+        arc(this.x, this.y, diameter - 15, diameter - 15, 5.2, 5.45);
+        strokeWeight(5);
+        arc(this.x, this.y, diameter - 10, diameter - 10, 5.8, 5.9);
+        noStroke();
+        fill(0, 25);
+        arc(this.x, this.y, diameter - 7, diameter - 7, 1, 3, CHORD);
+
     }
 
     move() {
@@ -50,7 +59,6 @@ class BouncingBall {
             }
         }
     }
-
 }
 
 function setup() {
@@ -60,14 +68,22 @@ function setup() {
 }
 
 function draw() {
-    background(40, 60, 110);
-    textSize(40);
-    fill(0);
     const offset = width / 6; 
+    background(40, 60, 110);
+
+    fill(0);
+    stroke(0);
+    strokeWeight(1);
+    textSize(40);
     text("Bouncing Balls: " + ballsCounter + "/25", width / 2 + 2 - offset, height / 2 + 2);             // shadow
     fill(255);
+    stroke(0);
+    strokeWeight(1);
+    textSize(40);
     text("Bouncing Balls: " + ballsCounter + "/25", width / 2 - offset, height / 2);                     // text
+
     landscape();
+
     if (ballsCounter > 0) {
         for (i = 0; i < ballsCounter; i++) {
             balls[i].show();
