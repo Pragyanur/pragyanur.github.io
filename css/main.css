@@ -11,7 +11,7 @@ body {
 
 a {
     color: white;
-    text-decoration: underline rgb(255, 255, 255) 1.5px;
+    text-decoration: none;
     transition: 0.3s;
 }
 
