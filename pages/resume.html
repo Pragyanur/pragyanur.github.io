@@ -6,11 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/specifics.css">
   <script src="../scripts/p5.js"></script>
   <title>Resume</title>
 </head>
 
-<body>
+<body style="background-color: black; overflow-x: hidden; margin: 0vw;">
   <div class="header">
     <div class="fixed" id="title">
       <a href="../index.html" class="fa fa-home"></a><a href="../pages/resume.html"></a>
@@ -19,37 +20,28 @@
     </div>
   </div>
   <div class="elementContainer">
+
     <div class="element">
       <h1>About me</h1>
       <div id="aboutMe">
-        <img src="../store/logo.jpeg" alt="logo" width="200" height="200">
+        <img id="myPhoto" src="../store/logo.jpeg" alt="logo">
         <div>
-          <p>
-            I am a programmer, fond of creating visualizations, simulation, programs including ML models and websites.
-          <p>I have had my formal education in mathematics, physics and computer science where I worked on various
-            projects
-            in the domains like-
-            Object Oriented Programming, Machine Learning, and Artificial Intelligence.
+          <p>I am a programmer, fond of creating visualizations, simulation, programs including ML models and websites.
+            <br><br>
+            I have had my formal education in mathematics, physics and computer science where I worked on various
+            projects in the domains like- Object Oriented Programming, Machine Learning, and Artificial Intelligence.
             I have more than 3 years of experience in 3D, VFX, animation, etc. using blender. 4 years of experience in
             custom artworks, graphic designing tasks on freelance basis. I have good knowledge about frontend
-            technologies
-            (HTML, CSS, JavaScript), UI design, web graphics and animation.
+            technologies (HTML, CSS, JavaScript), UI design, web graphics and animation.
           </p>
-          <h4>Work flow:</h4>
-          - You explain me the idea <br>
-          - I acknowledge and suggest changes <br>
-          - I work according to the blueprint <br>
-          - Reviews <br>
-          - Changes <br>
-          - Final submit <br><br>
-          </p>
+
         </div>
       </div>
-
-
     </div>
+
     <div id="education" class="element">
       <h1>Education highlights</h1>
+      <p>
       <ul class="levels">
         <li>
           <h4>Master of Computer Applications (2021 - 23)</h4>
@@ -72,33 +64,35 @@
           Passed with 95%.
         </li>
       </ul>
+      </p>
       <br>
     </div>
+
     <div id="skills" class="element">
       <h1>Skills and qualities</h1>
       <p></p>
     </div>
+
     <div id="tech" class="element">
       <h1>Languages and technologies</h1>
       <p></p>
     </div>
+
     <div id="socials" class="element">
       <h1>Internet presence</h1>
-      You can visit the following links/pages:
+      <p>You can visit the following links/pages:</p>
       <ul>
-        <li><a href="">GitHub</a>: link for code repositories</li>
-        <li><a href="">YouTube</a>: link to my art/animation/3D videos</li>
-        <li><a href="">Twitter</a>: link to my twitter page</li>
-        <li><a href="https://www.instagram.com/movingframes_pragyanur/">Instagram</a>: link to my art page on Instagram
-        </li>
-        <li><a href="">Behance</a>: link to my Behance portfolio</li>
+        <li><a href="https://github.com/Pragyanur">GitHub</a></li>
+        <li><a href="https://www.youtube.com/@MovingFramesPragyanur">YouTube</a></li>
+        <li><a href="https://twitter.com/MovingFramesP">Twitter</a></li>
+        <li><a href="https://www.instagram.com/movingframes_pragyanur/">Instagram</a></li>
+        <li><a href="https://www.behance.net/pragyanursaikia1">Behance</a></li>
       </ul>
-
       <br>
-
     </div>
 
     <div id="portfolio" class="element">
+      <h1>Projects and other works</h1>
       <h4>Select section</h4>
     </div>
   </div>
@@ -121,8 +115,10 @@
       <a id="myBtn">CONTACT</a>
     </div>
   </div>
+
   <script src="../scripts/script.js"></script>
   <script src="../scripts/resumeBackground.js"></script>
+
 </body>
 
 </html>

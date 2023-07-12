@@ -1,0 +1,42 @@
+
+@media (max-width: 420px),
+screen and (orientation: portrait) {
+  .fixed {
+    font-size: 20px;
+  }
+  h1 {
+    font-size: 4vw;
+  }
+  .LOGO {
+    transform: translate(-50%, -235px);
+  }
+
+  h4 {
+    font-size: 15px;
+  }
+
+  .fixed a {
+    font-size: 20px;
+  }
+
+a {
+  font-size: 17px;
+}
+
+  body {
+    padding-top: 30px;
+  }
+
+  div {
+    font-size: 25px;
+  }
+
+  * {
+    font-size: 10px;
+  }
+
+  .prjContainer {
+    font-size: 15px;
+    flex-direction: column;
+  }
+}

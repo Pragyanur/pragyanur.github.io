@@ -1,11 +1,13 @@
-let canvas;
+let canvas1;
 
 function setup() {
-  canvas = createCanvas(windowWidth, windowHeight);
-  canvas.position(0, 0);
-  canvas.style('z-index', '3');
+  canvas1 = createCanvas(windowWidth, windowHeight);
+  canvas1.position(0, 0);
+  canvas1.style('z-index', '-1');
 }
 
 function draw() {
+  noStroke();
+  fill(0, 100)
   circle(mouseX, mouseY, 100);
 }
