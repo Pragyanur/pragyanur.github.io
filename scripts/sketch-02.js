@@ -13,7 +13,7 @@ class BouncingBall {
         this.direction = 1;                             // +1 or -1
         this.displacement = 1;                          // vertical displacement between the pixels
         this.velocity = 0.5;                            // multiplier
-        this.ground = height * 5 / 6;                   // imaginary ground
+        this.ground = height * 5 / 6 - 10;              // imaginary ground
         this.damping = 1.1;                             // damping factor/friction
     }
 
