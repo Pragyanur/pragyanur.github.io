@@ -62,6 +62,20 @@ class BouncingBall {
     }
 }
 
+
+function landscape() {
+    fill(255);
+    noStroke(0);
+    rect(0, height * 5 / 6, width, height / 6);
+}
+
+function mouseClicked() {
+    if (ballsCounter < 25 && mouseX > 20 && mouseX < width - 20 && mouseY > 20 && mouseY < height - 20) {
+        balls[ballsCounter] = new BouncingBall(mouseX, mouseY);
+        ballsCounter++;
+    }
+}
+
 function setup() {
     canvas2 = createCanvas(windowWidth, windowHeight);
     canvas2.position(0, 0);
@@ -96,18 +110,5 @@ function draw() {
             balls[i].update();
             balls[i].move();
         }
-    }
-}
-
-function landscape() {
-    fill(255);
-    noStroke(0);
-    rect(0, height * 5 / 6, width, height / 6);
-}
-
-function mouseClicked() {
-    if (ballsCounter < 25 && mouseX > 20 && mouseX < width - 20 && mouseY > 20 && mouseY < height - 20) {
-        balls[ballsCounter] = new BouncingBall(mouseX, mouseY);
-        ballsCounter++;
     }
 }
