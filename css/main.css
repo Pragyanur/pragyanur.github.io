@@ -21,6 +21,36 @@ a:hover {
     transition: 0.3s;
 }
 
+
+li {
+    list-style: none;
+}
+
+h1 {
+    font-size: 2.5vw;
+}
+
+h4 {
+    font-size: 1.5vw;
+    font-weight: 400;
+}
+
+h1,
+h4 {
+    /* padding: 10px; */
+    color: white;
+    text-shadow: 0px 0px 2vh rgb(255, 255, 255);
+    transition: 1s;
+}
+
+h1:hover,
+h4:hover {
+    color: rgb(242, 65, 65);
+    text-shadow: 2px 3px rgb(0, 0, 0), 0px 0px 3px rgba(0, 0, 0, 0.763);
+    transition: text-shadow 0.3s;
+}
+
+
 .header {
     position: fixed;
     top: 5%;
@@ -33,7 +63,7 @@ a:hover {
     font-size: 125%;
     font-weight: 400;
     padding: 10px 20px;
-    border: 3px rgb(255, 255, 255) solid;
+    border: 0.15vw rgb(255, 255, 255) solid;
     background-color: rgb(93, 93, 93);
     box-shadow: 0 0 10vh rgba(255, 255, 255, 0.678);
 }
@@ -82,7 +112,7 @@ a:hover {
 .prj {
     flex: 1;
     padding: 0vw 2vw 2vw 2vw;
-    border: 0.1vw solid white;
+    border: 0.15vw solid white;
     margin: 1vw;
     transition: 0.5s;
 }
@@ -110,33 +140,6 @@ a:hover {
 .element:hover {
     background-color: rgba(157, 157, 157, 0.122);
     transition: 0.5s;
-}
-
-li {
-    list-style: none;
-}
-
-h1 {
-    font-size: 2.5vw;
-}
-
-h4 {
-    font-size: 1.5vw;
-}
-
-h1,
-h4 {
-    /* padding: 10px; */
-    color: white;
-    text-shadow: 0px 0px 2vh rgb(255, 255, 255);
-    transition: 1s;
-}
-
-h1:hover,
-h4:hover {
-    color: rgb(242, 65, 65);
-    text-shadow: 2px 3px rgb(0, 0, 0), 0px 0px 3px rgba(0, 0, 0, 0.763);
-    transition: text-shadow 0.3s;
 }
 
 /*IMAGES TO THE BACKGROUND*/
