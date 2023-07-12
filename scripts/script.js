@@ -10,7 +10,6 @@ var span = document.getElementsByClassName("close")[0];
 // When the user clicks on the button, open the modal
 btn.onclick = function() {
   modal.style.display = "block";
-  modal.style.background = "rgba(0, 0, 0, 0.5)";
 }
 
 // When the user clicks on <span> (x), close the modal
@@ -23,4 +22,17 @@ window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
+}
+
+
+// selection of section
+
+var art = document.getElementById("art");
+art.onclick = function() {
+  location.href = "../pages/all_projects.html";
+}
+
+var code = document.getElementById("code");
+code.onclick = function() {
+  location.href = "../pages/all_projects.html";
 }
