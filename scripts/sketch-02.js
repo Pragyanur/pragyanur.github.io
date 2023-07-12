@@ -89,16 +89,16 @@ function draw() {
     fill(0, 200);
     noStroke();
     strokeWeight(1);
-    textSize(60);
-    text("Bouncing Balls: " + ballsCounter + "/25", width / 2 + 3, height / 2 + 3 + offset);             // shadow
+    textSize(30);
+    text("Bouncing Balls: " + ballsCounter + "/25", 70, height / 2 + 3 + offset);             // shadow
 
     fill(200, 0, 50);
     stroke(0);
-    rect(width / 2 + 3, height / 2 + 205, 300 + ballsCounter * 11, 10);
+    rect(73, height / 2 + 205, ballsCounter * 11.5, 10);
 
     fill(255);
-    textSize(60);
-    text("Bouncing Balls: " + ballsCounter + "/25", width / 2, height / 2 + offset);                     // text
+    textSize(30);
+    text("Bouncing Balls: " + ballsCounter + "/25", 70, height / 2 + offset);                     // text
 
 
 

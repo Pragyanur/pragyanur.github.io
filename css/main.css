@@ -208,58 +208,26 @@ h4:hover {
 
 /* The Modal (background) */
 .modal {
-    color: #ffffff;
     display: none;
-    /* Hidden by default */
     position: fixed;
-    /* Stay in place */
     z-index: 1;
-    /* Sit on top */
     left: 0;
     top: 0;
     width: 100%;
-    /* Full width */
     height: 100%;
-    /* Full height */
     overflow: hidden;
-    /* Enable scroll if needed */
-    background-color: rgba(0, 0, 0, 0.666);
-    /* Black w/ opacity */
+    background-color: rgba(0, 0, 0, 0.579);
 }
 
 /* Modal Content/Box */
 .modal-content {
-    display: block;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
     color: rgb(0, 0, 0);
     margin: 25% auto;
     background-color: rgba(0, 0, 0, 0.545);
-    padding: 0px 20px;
+    padding: 10px;
     border: 1px solid #ffffff;
-    width: 40%;
-    /* Could be more or less, depending on screen size */
-}
-
-.modal-content div {
-    display: flex;
-    justify-content: space-between;
-}
-
-.modal-content a {
-    text-decoration: none;
-    padding: 1vh;
-    text-shadow: 0 0 2vh#000000;
-}
-
-/* The Close Button */
-.close {
-    padding-left: 1vw;
-    color: #c7c7c7;
-    float: right;
-    font-weight: bold;
-    transition: 0.5s;
-}
-
-.close:hover {
-    color: rgb(225, 34, 34);
-    cursor: pointer;
+    width: 75%;
 }
