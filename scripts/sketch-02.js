@@ -5,11 +5,11 @@ balls = [numberOfBalls];
 let ballsCounter = 0;
 const diameter = 70;
 
-
 class BouncingBall {
     constructor(posX, posY) {
         this.x = posX;
         this.y = posY;
+        this.height = 
         this.direction = 1;                             // +1 or -1
         this.displacement = 1;                          // vertical displacement between the pixels
         this.velocity = 0.5;                            // multiplier
@@ -19,6 +19,7 @@ class BouncingBall {
 
     show() {
         // shadow
+
 
         fill(200, 0, 50);
         stroke(0);
@@ -76,6 +77,8 @@ function mouseClicked() {
     }
 }
 
+
+
 function setup() {
     canvas2 = createCanvas(windowWidth, windowHeight);
     canvas2.position(0, 0);
@@ -100,12 +103,22 @@ function draw() {
     textSize(30);
     text("Bouncing Balls: " + ballsCounter + "/25", 70, height / 2 + offset);                     // text
 
+    if(mouseX > 60 && mouseX < 215 && mouseY > 100 && mouseY < 160) {
+        fill(200);
+        if(mouseIsPressed) {
+            balls[ballsCounter] = new BouncingBall(random(20, width - 20), random(20, height - 100));
+        }
+    }
+    rect(60 , 100, 155, 60, 10);
+    fill(100);
+    noStroke();
+    text("Drop balls", 70, 140);
 
 
     landscape();
 
     if (ballsCounter > 0) {
-        for (i = 0; i < ballsCounter; i++) {
+        for (let i = 0; i < ballsCounter; i++) {
             balls[i].show();
             balls[i].update();
             balls[i].move();
