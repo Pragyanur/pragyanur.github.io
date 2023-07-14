@@ -5,7 +5,8 @@ balls = [numberOfBalls];
 let ballsCounter = 0;
 const diameter = 70;
 const radius = diameter / 2;
-const dampFactor = 1.1;
+const dampInitial = 1.1;                                // value changes with each bounce
+const dampFactor = 0.02;                                // value > 0.001 works fine
 const speed = 0.5;
 
 class BouncingBall {
@@ -16,13 +17,11 @@ class BouncingBall {
         this.displacement = 1;                          // vertical displacement between the pixels
         this.velocity = speed;                            // multiplier
         this.ground = height * 5 / 6 - 10;              // imaginary ground
-        this.damping = dampFactor;                             // damping factor/friction
+        this.damping = dampInitial;                             // damping factor/friction
     }
 
     show() {
-        // shadow
-
-
+        // ball
         fill(200, 0, 50);
         stroke(0);
         strokeWeight(1);
@@ -35,7 +34,13 @@ class BouncingBall {
         noStroke();
         fill(0, 25);
         arc(this.x, this.y, diameter - 7, diameter - 7, 1, 3, CHORD);
+    }
 
+    showShadow() {
+        // shadow
+        noStroke();
+        fill(0, 50);
+        ellipse(this.x, this.ground + 40, this.y * 0.1, this.y * 0.05);
     }
 
     move() {
@@ -44,16 +49,15 @@ class BouncingBall {
 
     damp() {
         this.displacement /= this.damping;
-        this.damping += 0.01;
+        this.damping += dampFactor;
     }
     hold() {
         this.x = mouseX;
         this.y = mouseY;
-        this.damping = dampFactor;
+        this.damping = dampInitial;
         this.displacement = 1;
         this.direction = 1;
         this.velocity = speed;
-
     }
 
     update() {
@@ -79,6 +83,14 @@ function landscape() {
     fill(255);
     noStroke(0);
     rect(0, height * 5 / 6, width, height / 6);
+
+    // ball's shadow
+
+    // if (ballsCounter > 0) {
+    //     for (let ball of balls) {
+    //         // ball.showShadow();
+    //     }
+    // }
 }
 
 function mouseReleased() {
@@ -97,12 +109,13 @@ function setup() {
 function draw() {
     const offset = height / 4;
     background(40, 60, 110);
+    landscape();
 
     fill(0, 200);
     noStroke();
     strokeWeight(1);
     textSize(30);
-    text("Bouncing Balls: " + ballsCounter + "/25", 70, height / 2 + 3 + offset);             // shadow
+    text("Bouncing Balls: " + ballsCounter + "/25", 70, height / 2 + 3 + offset);                   // text shadow
 
     fill(200, 0, 50);
     stroke(0);
@@ -111,23 +124,23 @@ function draw() {
     fill(255);
     textSize(30);
     text("Bouncing Balls: " + ballsCounter + "/25", 70, height / 2 + offset);                     // text
+    textSize(20);
+    fill(200);
+    text("You can reposition the balls once the counter reaches 25", 70, 100, 270);
 
-    text("You can reposition the balls once the counter reaches 25")
-
-    landscape();
 
     // to hold a ball and reposition
     for (let ball of balls) {
-        if(ballsCounter >= 25 && mouseIsPressed && mouseX > ball.x - radius && mouseX < ball.x + radius && mouseY > ball.y - radius && mouseY < ball.y + radius){
+        if (ballsCounter >= 25 && mouseIsPressed && mouseX > ball.x - radius && mouseX < ball.x + radius && mouseY > ball.y - radius && mouseY < ball.y + radius) {
             ball.hold();
             break;
         }
     }
     if (ballsCounter > 0) {
-        for (let i = 0; i < ballsCounter; i++) {
-            balls[i].show();
-            balls[i].update();
-            balls[i].move();
+        for (let ball of balls) {
+            ball.show();
+            ball.update();
+            ball.move();
         }
     }
 
