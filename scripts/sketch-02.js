@@ -4,17 +4,19 @@ let numberOfBalls = 25;
 balls = [numberOfBalls];
 let ballsCounter = 0;
 const diameter = 70;
+const radius = diameter / 2;
+const dampFactor = 1.1;
+const speed = 0.5;
 
 class BouncingBall {
     constructor(posX, posY) {
         this.x = posX;
         this.y = posY;
-        this.height = 
         this.direction = 1;                             // +1 or -1
         this.displacement = 1;                          // vertical displacement between the pixels
-        this.velocity = 0.5;                            // multiplier
+        this.velocity = speed;                            // multiplier
         this.ground = height * 5 / 6 - 10;              // imaginary ground
-        this.damping = 1.1;                             // damping factor/friction
+        this.damping = dampFactor;                             // damping factor/friction
     }
 
     show() {
@@ -44,6 +46,15 @@ class BouncingBall {
         this.displacement /= this.damping;
         this.damping += 0.01;
     }
+    hold() {
+        this.x = mouseX;
+        this.y = mouseY;
+        this.damping = dampFactor;
+        this.displacement = 1;
+        this.direction = 1;
+        this.velocity = speed;
+
+    }
 
     update() {
         this.displacement += this.velocity;
@@ -70,14 +81,12 @@ function landscape() {
     rect(0, height * 5 / 6, width, height / 6);
 }
 
-function mouseClicked() {
+function mouseReleased() {
     if (ballsCounter < 25 && mouseX > 20 && mouseX < width - 20 && mouseY > 20 && mouseY < height - 20) {
         balls[ballsCounter] = new BouncingBall(mouseX, mouseY);
         ballsCounter++;
     }
 }
-
-
 
 function setup() {
     canvas2 = createCanvas(windowWidth, windowHeight);
@@ -103,20 +112,17 @@ function draw() {
     textSize(30);
     text("Bouncing Balls: " + ballsCounter + "/25", 70, height / 2 + offset);                     // text
 
-    if(mouseX > 60 && mouseX < 215 && mouseY > 100 && mouseY < 160) {
-        fill(200);
-        if(mouseIsPressed) {
-            balls[ballsCounter] = new BouncingBall(random(20, width - 20), random(20, height - 100));
-        }
-    }
-    rect(60 , 100, 155, 60, 10);
-    fill(100);
-    noStroke();
-    text("Drop balls", 70, 140);
-
+    text("You can reposition the balls once the counter reaches 25")
 
     landscape();
 
+    // to hold a ball and reposition
+    for (let ball of balls) {
+        if(ballsCounter >= 25 && mouseIsPressed && mouseX > ball.x - radius && mouseX < ball.x + radius && mouseY > ball.y - radius && mouseY < ball.y + radius){
+            ball.hold();
+            break;
+        }
+    }
     if (ballsCounter > 0) {
         for (let i = 0; i < ballsCounter; i++) {
             balls[i].show();
@@ -124,4 +130,6 @@ function draw() {
             balls[i].move();
         }
     }
+
+
 }
