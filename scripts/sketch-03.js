@@ -1,32 +1,8 @@
-class wheelObject {
-  constructor(posX, posY, size) {
-    this.X = posX;
-    this.Y = posY;
-    this.diameter = size;
-    this.xSqueeze = this.diameter * 9 / 10;
-  }
-  show() {
-    stroke(255);
-    fill(0, 100);
-    ellipse(this.X + 50, this.Y, this.xSqueeze - 10, this.diameter - 10);
-    stroke(200);
-    fill(200, 30, 20);
-    rect(this.X, this.Y - this.diameter / 2, 30, this.diameter);
-    stroke(255);
-    fill(0, 100);
-
-    ellipse(this.X, this.Y, this.xSqueeze, this.diameter);
-    ellipse(this.X, this.Y, this.xSqueeze - 30, this.diameter - 30);
-  }
-
-  animate() {
-
-  }
-}
 let pos = 0;
 
 function setup() {
-  bg = createCanvas(windowWidth, windowheight);
+  bg = createCanvas(windowWidth, windowHeight);
+  bg.position(0,0);
   bg.style('z-index', -1);
 
   // L1 = createGraphics(windowWidth, windowHeight);
@@ -42,11 +18,6 @@ function setup() {
 }
 
 
-function mouseWheel(event) {
-  pos += event.delta;
-  bg.position(0, pos);
-}
-
 function draw() {
 
   background(0);
@@ -61,7 +32,7 @@ function draw() {
   // grid
   for (let x = 0; x < width; x += 20) {
     strokeWeight(1);
-    stroke(255, 50);
+    stroke(255, 30);
     line(x, 0, x, width);
     line(0, x, width, x);
   }

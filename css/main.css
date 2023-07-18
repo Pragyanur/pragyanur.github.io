@@ -11,7 +11,7 @@ div {
 
 body {
     margin: 0%;
-    /* background-color: #00000046; */
+    background-color: #000000;
 }
 
 a {
@@ -165,10 +165,7 @@ h4:hover {
 }
 
 
-.CV {
-    padding: 40px 20px;
-    text-align: right;
-}
+
 
 /*IMAGES TO THE BACKGROUND*/
 
@@ -224,7 +221,7 @@ h4:hover {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.579);
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 /* Modal Content/Box */
@@ -232,10 +229,10 @@ h4:hover {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
     margin: 25% auto;
-    background-color: rgba(0, 0, 0, 0.545);
-    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
     border: 1px solid #ffffff;
     width: 75%;
 }

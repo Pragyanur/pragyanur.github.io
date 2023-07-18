@@ -24,7 +24,6 @@ window.onclick = function(event) {
   }
 }
 
-
 // selection of section
 
 var art = document.getElementById("art");
