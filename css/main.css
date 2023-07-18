@@ -1,5 +1,5 @@
 * {
-    box-sizing: content-box;
+    box-sizing: border-box;
     color: rgb(155, 155, 155);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align: left;
@@ -7,12 +7,11 @@
 
 div {
     font-size: 2vw;
-
 }
 
 body {
     margin: 0%;
-    background-color: #00000046;
+    /* background-color: #00000046; */
 }
 
 a {
@@ -39,14 +38,14 @@ h1 {
 }
 
 h4 {
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 400;
 }
 
 h1,
 h4 {
     color: white;
-    text-shadow: 0px 0px 10px rgb(255, 255, 255);
+    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.834);
     transition: 1s;
 }
 
@@ -68,7 +67,7 @@ h4:hover {
 #myPhoto {
     border-radius: 50%;
     width: 20vw;
-    padding: 20px;
+    margin: 20px;
     align-self: flex-start;
 }
 
@@ -77,8 +76,7 @@ h4:hover {
     font-size: 2vw;
     padding: 1vw 2vw;
     border: 1px rgb(255, 255, 255) solid;
-    background-color: rgb(93, 93, 93);
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.738);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
 }
 
 .LOGO {
@@ -87,8 +85,8 @@ h4:hover {
     top: 50%;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    border: 1px rgb(255, 255, 255) solid;
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.738);
+    border: 2px rgb(255, 255, 255) solid;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
 }
 
 .footer {
@@ -127,13 +125,13 @@ h4:hover {
 .prj {
     flex: 1;
     padding: 0vw 2vw 2vw 2vw;
-    border: 0.15vw solid white;
+    border: 1px solid white;
     margin: 1vw;
     transition: 0.5s;
 }
 
 .prj:hover {
-    background-color: rgba(255, 255, 255, 0.119);
+    background-color: rgba(255, 255, 255, 0.10);
     transition: 0.5s;
 }
 
@@ -154,16 +152,22 @@ h4:hover {
 
 .element {
     flex: 1;
-    padding: 10px 20px;
-    margin: 0.5vh 3vw;
-    border: 2px dashed rgb(115, 115, 115);
-    background-color: rgba(0, 0, 0, 0.105);
+    font-size: 15px;
+    padding: 1vh 3vw;
+    margin: 0.5vh 10vw;
+    border: 1px dashed rgb(115, 115, 115);
     transition: 0.5s;
 }
 
 .element:hover {
-    background-color: rgba(157, 157, 157, 0.122);
+    background-color: rgba(255, 255, 255, 0.10);
     transition: 0.5s;
+}
+
+
+.CV {
+    padding: 40px 20px;
+    text-align: right;
 }
 
 /*IMAGES TO THE BACKGROUND*/
@@ -200,7 +204,10 @@ h4:hover {
     padding-right: 5vw;
 }
 
-
+#socials a {
+    font-size: 30px;
+    padding: 10px 20px;
+}
 
 /* modal button css */
 #myBtn {

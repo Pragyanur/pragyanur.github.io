@@ -19,8 +19,9 @@ screen and (orientation: portrait) {
     font-size: 20px;
   }
 
+
 a {
-  font-size: 17px;
+  font-size: 15px;
 }
 
   body {
@@ -38,5 +39,8 @@ a {
   .prjContainer {
     font-size: 15px;
     flex-direction: column;
+  }
+  .element {
+    margin: 10px;
   }
 }
