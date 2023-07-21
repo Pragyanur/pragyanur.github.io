@@ -72,7 +72,10 @@ h4:hover {
 }
 
 .fixed {
-    background-image: url("../store/backgroundGIF.gif");
+    background-image: url("../store/background_felicity.gif");
+    background-blend-mode: multiply;
+    background-position: center;
+    background-color: #00000084;
     font-size: 2vw;
     padding: 1vw 2vw;
     border: 1px rgb(255, 255, 255) solid;
@@ -202,8 +205,8 @@ h4:hover {
 }
 
 #socials a {
-    font-size: 30px;
-    padding: 10px 20px;
+    font-size: 20px;
+    padding: 10px 10px;
 }
 
 /* modal button css */
