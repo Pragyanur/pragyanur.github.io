@@ -3,7 +3,7 @@ let numberOfBalls = 25;
 
 balls = [numberOfBalls];
 let ballsCounter = 0;
-const diameter = 70;
+const diameter = 50;
 const radius = diameter / 2;
 const dampInitial = 1.1;                                // value changes with each bounce
 const dampFactor = 0.02;                                // value > 0.001 works fine
@@ -107,7 +107,8 @@ function setup() {
 }
 
 function draw() {
-    const offset = height / 4;
+    const offsetY = height / 4;
+    const offsetX = width / 7;
     background(40, 60, 110);
     landscape();
 
@@ -115,7 +116,7 @@ function draw() {
     noStroke();
     strokeWeight(1);
     textSize(30);
-    text("Bouncing Balls: " + ballsCounter + "/25", 70, height / 2 + 3 + offset);                   // text shadow
+    text("Bouncing Balls: " + ballsCounter + "/25", offsetX, height / 2 + 3 + offsetY);                   // text shadow
 
     fill(200, 0, 50);
     stroke(0);
@@ -123,10 +124,10 @@ function draw() {
 
     fill(255);
     textSize(30);
-    text("Bouncing Balls: " + ballsCounter + "/25", 70, height / 2 + offset);                     // text
+    text("Bouncing Balls: " + ballsCounter + "/25", offsetX, height / 2 + offsetY);                     // text
     textSize(20);
     fill(200);
-    text("You can reposition the balls once the counter reaches 25", 70, 100, 270);
+    text("You can reposition the balls once the counter reaches 25", offsetX, 100, 270);
 
 
     // to hold a ball and reposition
