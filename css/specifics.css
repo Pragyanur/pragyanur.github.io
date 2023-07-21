@@ -1,12 +1,17 @@
-
 @media (max-width: 430px),
 screen and (orientation: portrait) {
   .fixed {
     font-size: 20px;
   }
+
+  .fixed a {
+    font-size: 20px;
+  }
+
   h1 {
     font-size: 4vw;
   }
+
   .LOGO {
     transform: translate(-50%, -235px);
   }
@@ -15,14 +20,10 @@ screen and (orientation: portrait) {
     font-size: 15px;
   }
 
-  .fixed a {
-    font-size: 20px;
+  a {
+    font-size: 15px;
+    color: rgb(255, 255, 255);
   }
-
-
-a {
-  font-size: 15px;
-}
 
   body {
     padding-top: 30px;
@@ -40,6 +41,7 @@ a {
     font-size: 15px;
     flex-direction: column;
   }
+
   .element {
     margin: 10px;
   }
