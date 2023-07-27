@@ -38,13 +38,13 @@ function change_cell_state(array, x, y) {
   if (array[x][y] == true && count_alive(array, x, y) < 2)
     array[x][y] = false;
   // live cell with 2 or 3 alive neighbours
-  else if (array[x][y] == true && count_alive(array, x, y) >= 2 && count_alive(array, x, y) <= 3)
+  if (array[x][y] == true && count_alive(array, x, y) >= 2 && count_alive(array, x, y) <= 3)
     array[x][y] = true;
   // live cell with more than 3 alive neighbours
-  else if (array[x][y] == true && count_alive(array, x, y) > 3)
+  if (array[x][y] == true && count_alive(array, x, y) > 3)
     array[x][y] = false;
   // dead cell with exactly three alive neighbours
-  else if (array[x][y] == false && count_alive(array, x, y) == 3)
+  if (array[x][y] == false && count_alive(array, x, y) == 3)
     array[x][y] = true;
 }
 
