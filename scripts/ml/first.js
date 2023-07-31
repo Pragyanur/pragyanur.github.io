@@ -4,7 +4,7 @@ let video;
 const canvas = document.getElementById("video");
 
 function modelReady() {
-  console.log("MobileNet model is ready");
+  console.log("MobileNet model is predicting");
   mobileNetClassifier.predict(results);
 }
 
@@ -16,17 +16,19 @@ function results(error, result) {
     console.log(result[0]);
 
     predicted_labels = result[0].label;
+
     prediction_confidence = result[0].confidence * 100;
     prediction_confidence = prediction_confidence.toFixed(2);
 
     if (result[0].confidence < 0.5) {
-      p.innerHTML = "Unable to predict. (" + predicted_labels + " <50% confidence)";
+      p.innerHTML = "Unable to predict. Confidence <50% <br> Maybe: " + predicted_labels;
     } else {
-      p.innerHTML = "Prediction is: " + predicted_labels + " (" + prediction_confidence + ")";
+      p.innerHTML = "Prediction is: " + predicted_labels + "<br>Confidence: " + prediction_confidence + "%";
     }
   }
-  mobileNetClassifier.predict(results);
 }
+
+setInterval(modelReady, 1000);
 
 function setup() {
   createCanvas(600, 450, P2D, canvas);
@@ -36,5 +38,5 @@ function setup() {
 }
 
 function draw() {
-  img = image(video, 0, 0, width, height);
+  image(video, 0, 0, width, height);
 }
