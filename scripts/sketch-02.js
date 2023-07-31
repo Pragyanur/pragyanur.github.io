@@ -21,7 +21,6 @@ class BouncingBall {
     }
 
     show() {
-        // ball
         fill(200, 0, 50);
         stroke(0);
         strokeWeight(1);
@@ -34,13 +33,6 @@ class BouncingBall {
         noStroke();
         fill(0, 25);
         arc(this.x, this.y, diameter - 7, diameter - 7, 1, 3, CHORD);
-    }
-
-    showShadow() {
-        // shadow
-        noStroke();
-        fill(0, 50);
-        ellipse(this.x, this.ground + 40, this.y * 0.1, this.y * 0.05);
     }
 
     move() {
@@ -83,14 +75,6 @@ function landscape() {
     fill(255);
     noStroke(0);
     rect(0, height * 5 / 6, width, height / 6);
-
-    // ball's shadow
-
-    // if (ballsCounter > 0) {
-    //     for (let ball of balls) {
-    //         // ball.showShadow();
-    //     }
-    // }
 }
 
 function mouseReleased() {
@@ -132,7 +116,7 @@ function draw() {
 
     // to hold a ball and reposition
     for (let ball of balls) {
-        if (ballsCounter >= 25 && mouseIsPressed && mouseX > ball.x - radius && mouseX < ball.x + radius && mouseY > ball.y - radius && mouseY < ball.y + radius) {
+        if (ballsCounter >= 25 && dist(ball.x, ball.y, mouseX, mouseY) < radius && mouseIsPressed) {
             ball.hold();
             break;
         }

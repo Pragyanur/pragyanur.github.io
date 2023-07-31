@@ -24,8 +24,6 @@ window.onclick = function(event) {
   }
 }
 
-// selection of section
-
 var art = document.getElementById("art");
 art.onclick = function() {
   location.href = "../pages/all_projects.html";

@@ -6,7 +6,7 @@ class GridSquare {
     this.x = x;
     this.y = y;
     this.size = 20;
-    this.color = random(200);
+    this.color = random(10, 200);
   }
   show() {
     fill(0, 100);
@@ -17,20 +17,14 @@ class GridSquare {
     fill(this.color);
     rect(this.x, this.y, this.size);
   }
-  distance() {
-    let dis = Math.sqrt((mouseX - this.x) * (mouseX - this.x) + (this.y - mouseY) * (this.y - mouseY));
-    return dis;
-  }
   update() {
-    if (this.distance() < 500) {
-      let factor = map(this.distance(), 0, 300, 10, 20);
+    let distance = dist(mouseX, mouseY, this.x, this.y);
+    if (distance < 500) {
+      let factor = map(distance, 0, 300, 10, 20);
       this.size = factor;
-      // let col = map(this.distance(), 0, 200, 10, 0);
-      // this.color = col;
     }
     else {
       this.size = 20;
-      // this.color = 0;
     }
   }
 }
@@ -48,7 +42,7 @@ function setup() {
 }
 
 function draw() {
-  background(150, 0, 0);
+  background(20, 90, 70);
   for (let item of square) {
     item.show();
     item.update();
