@@ -18,12 +18,13 @@ a {
     font-size: 2vw;
     color: white;
     text-decoration: none;
+    text-shadow: 0px 1px 2px #000000;
     transition: 0.3s;
 }
 
 a:hover {
-    color: rgb(255, 59, 59);
-    text-shadow: 0px 3px 1px rgb(0, 0, 0);
+    color: rgb(255, 60, 60);
+    text-shadow: 0px 2px 1px rgb(0, 0, 0);
     transition: 0.3s;
 }
 
@@ -59,7 +60,7 @@ h4:hover {
 
 .header {
     position: fixed;
-    top: 5%;
+    top: 3%;
     left: 50%;
     transform: translate(-50%, 0%);
 }
@@ -72,14 +73,20 @@ h4:hover {
 }
 
 .fixed {
-    background-image: url("../store/background_felicity.gif");
-    background-blend-mode: multiply;
+    border: rgb(180, 180, 180) 1px solid;
+    background-color: rgb(36, 36, 36);
     background-position: center;
-    background-color: #00000084;
     font-size: 2vw;
     padding: 1vw 2vw;
-    border: 1px rgb(255, 255, 255) solid;
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+    box-shadow: 3px 3px 0px rgb(184, 184, 184);
+    transition: 0.3s;
+}
+
+.fixed:hover {
+    background-color: rgb(80, 80, 80);
+    box-shadow: 0px 0px 0px rgb(255, 255, 255);
+    transform: translate(3px, 3px);
+    transition: 0.3s;
 }
 
 .LOGO {
@@ -94,7 +101,7 @@ h4:hover {
 
 .footer {
     position: fixed;
-    bottom: 5%;
+    bottom: 2%;
     left: 50%;
     transform: translate(-50%, 0%);
 }
@@ -173,7 +180,7 @@ h4:hover {
 /*IMAGES TO THE BACKGROUND*/
 
 #art {
-    background-image: url("../store/ARTcolored.jpg");
+    background-image: url("../store/ARTbw.jpg");
     background-position: center;
     transition: 0.5s;
     border-right: 1px white solid;
@@ -184,7 +191,7 @@ h4:hover {
 }
 
 #code {
-    background-image: url("../store/CODEcolored.jpg");
+    background-image: url("../store/CODEbw.jpg");
     background-position: top;
     transition: 0.5s ease;
     /* border-left: 1.75px white solid; */
