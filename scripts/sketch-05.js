@@ -1,5 +1,5 @@
 const MAX_SPEED = -15;
-const MAX_REVERSE = 5;
+const MAX_REVERSE = 15;
 const MAX_STEER = 5;
 
 
@@ -37,6 +37,18 @@ function setup() {
       this.rePositionSteering();
       this.position.y += this.velocity.y;
       this.position.x += this.velocity.x;
+      if (this.position.x > width) {
+        this.position.x = 0;
+      }
+      if (this.position.x < 0) {
+        this.position.x = width;
+      }
+      if (this.position.y > height) {
+        this.position.y = 0;
+      }
+      if (this.position.y < 0) {
+        this.position.y = height;
+      }
     }
 
     deAcceleration() {
