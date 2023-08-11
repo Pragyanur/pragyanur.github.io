@@ -123,7 +123,8 @@
 // }
 
 
-let columns, rows, s;
+let columns, rows;
+const s = 13;
 
 let life = [];
 let next = [];
@@ -146,7 +147,7 @@ function randomAlive() {
 
 function grid() {
   let howMany;
-  stroke(255, 50);
+  stroke(255, 20);
   howMany = columns > rows ? columns : rows;
   for (let i = 0; i <= howMany; i++) {
     let coordinate = i * s;
@@ -156,8 +157,8 @@ function grid() {
 }
 
 function colorAlive() {
-  stroke(255);
-  fill(30, 80, 60);
+  stroke(255, 150);
+  fill(20, 100, 120, 200);
   for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
       if (life[i][j] == 1) {
@@ -170,7 +171,6 @@ function colorAlive() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   frameRate(10);
-  s = 20;
   // Calculate columns and rows
   columns = floor(width / s);
   rows = floor(height / s);
@@ -187,9 +187,10 @@ function setup() {
 
 function draw() {
   background(0);
+  noStroke();
   fill(255);
-  textSize(20);
-  text("Conway's Game of Life", width / 10, height / 5);
+  textSize(25);
+  text("Conway's Game of Life", width / 20, height / 5);
   fill(200);
   textSize(13);
   grid();
