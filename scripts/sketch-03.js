@@ -217,7 +217,7 @@ function random_alive(array) {
 function setup() {
   background(0);
   frameRate(7);
-  createCanvas(500, 500);
+  createCanvas(windowWidth, windowHeight);
   // count the number of horizontal cells
   for (let x = cell_mid; x < width; x += cell_size) {
     countX++;
