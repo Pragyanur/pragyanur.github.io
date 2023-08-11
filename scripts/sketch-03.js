@@ -158,11 +158,11 @@ function grid() {
 
 function colorAlive() {
   stroke(255, 150);
-  fill(20, 100, 120, 200);
+  fill(200, 100, 50, 200);
   for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
       if (life[i][j] == 1) {
-        rect(i * s, j * s, s, s);
+        rect(i * s, j * s, s, s, 2);
       }
     }
   }
@@ -210,3 +210,6 @@ function draw() {
   colorAlive();
 }
 
+function mouseClicked() {
+  randomAlive();
+}
