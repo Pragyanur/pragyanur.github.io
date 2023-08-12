@@ -145,6 +145,12 @@ function randomAlive() {
       life[i][j] = floor(random(2));
 }
 
+function clearGrid() {
+  for (let i = 1; i < columns - 1; i++)
+    for (let j = 1; j < rows - 1; j++)
+      life[i][j] = 0;
+}
+
 function grid() {
   let howMany;
   stroke(255, 20);
@@ -182,7 +188,6 @@ function setup() {
       life[i][j] = false;
     }
   }
-  randomAlive();
 }
 
 function draw() {
@@ -193,23 +198,35 @@ function draw() {
   text("Conway's Game of Life", width / 20, height / 5);
   fill(200);
   textSize(13);
+  text("> Touch and drag to create alive cells on the screen", width / 20, height / 5 + 25);
+  text("> Press R to assign the cells randomly as alive or dead", width / 20, height / 5 + 45);
+  text("> Press C to clear the board", width / 20, height / 5 + 65);
   grid();
-  for (let i = 1; i < columns - 1; i++) {
-    for (let j = 1; j < rows - 1; j++) {
-      if (life[i][j] == 1 && neighbors(i, j) < 2) next[i][j] = 0;
-      else if (life[i][j] == 1 && neighbors(i, j) > 3) next[i][j] = 0;
-      else if (life[i][j] == 0 && neighbors(i, j) == 3) next[i][j] = 1;
-      else next[i][j] = life[i][j];     // no change if number of neighbors is 2 or 3
+  if (!mouseIsPressed) {
+    for (let i = 1; i < columns - 1; i++) {
+      for (let j = 1; j < rows - 1; j++) {
+        if (life[i][j] == 1 && neighbors(i, j) < 2) next[i][j] = 0;
+        else if (life[i][j] == 1 && neighbors(i, j) > 3) next[i][j] = 0;
+        else if (life[i][j] == 0 && neighbors(i, j) == 3) next[i][j] = 1;
+        else next[i][j] = life[i][j];     // no change if number of neighbors is 2 or 3
+      }
     }
+    let temp = life;
+    life = next;
+    next = temp;
   }
+  if (keyIsPressed) {
+    console.log(keyCode);
+    if (keyCode == 82) randomAlive();
+    if (keyCode == 67) clearGrid();
 
-  let temp = life;
-  life = next;
-  next = temp;
-
+  }
   colorAlive();
 }
 
-function mouseClicked() {
-  randomAlive();
+function mouseDragged() {
+  let x = floor(mouseX / s);
+  let y = floor(mouseY / s);
+  if (x <= 0 || y <= 0 || x >= columns - 1 || y >= rows - 1) {      // exception of clicking outside the grid
+  } else life[x][y] = 1;
 }
