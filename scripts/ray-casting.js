@@ -69,9 +69,6 @@ class RAY {
   }
 }
 
-
-
-
 class WALL {
   constructor(x1, y1, x2, y2) {
     this.A = createVector(x1, y1);
@@ -84,9 +81,8 @@ class WALL {
 }
 
 
-
-
 function setup() {
+  
   createCanvas(windowWidth, windowHeight, WEBGL);
   let wall = new WALL(100, 500, 600, 600);
 
@@ -128,9 +124,9 @@ function draw() {
   endShape();
 
   fill(255, 100);
+  circle(mouseX, mouseY, 5);
   circle(mouseX, mouseY, 10);
-  circle(mouseX, mouseY, 30);
-  circle(mouseX, mouseY, 80);
+  circle(mouseX, mouseY, 15);
 
   if(mouseIsPressed) {
     stroke(255);
