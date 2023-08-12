@@ -82,7 +82,7 @@ class WALL {
 
 
 function setup() {
-  
+  noCursor();
   createCanvas(windowWidth, windowHeight, WEBGL);
   let wall = new WALL(100, 500, 600, 600);
 
