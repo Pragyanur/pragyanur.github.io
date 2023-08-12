@@ -82,31 +82,47 @@ class WALL {
 
 
 function setup() {
-  noCursor();
-  createCanvas(windowWidth, windowHeight, WEBGL);
-  let wall = new WALL(100, 500, 600, 600);
+  createCanvas(windowWidth, windowHeight);
+  let textTop = new WALL(50, 100, 510, 100);
+  let textRight = new WALL(510, 100, 510, 220);
+  let textBottom = new WALL(50, 220, 510, 220);
+  let textLeft = new WALL(50, 100, 50, 220);
+  walls.push(textTop);
+  walls.push(textRight);
+  walls.push(textBottom);
+  walls.push(textLeft);
 
   let t = new WALL(offset, offset, width - offset, offset);
   let r = new WALL(width - offset, offset, width - offset, height - offset);
   let b = new WALL(offset, height - offset, width - offset, height - offset);
   let l = new WALL(offset, offset, offset, height - offset);
-
-  walls.push(wall);
   walls.push(t);
   walls.push(r);
   walls.push(b);
   walls.push(l);
 
-  let resolution = PI * 2 / 2000;
+  let w1 = new WALL(700, 200, 600, 500);
+  let w2 = new WALL(600, 500, 100, 500);
+  let w3 = new WALL(1000, 100, 1200, 500);
+  walls.push(w1);
+  walls.push(w2);
+  walls.push(w3);
+
+  mouseX = 225;
+  mouseY = 300;
+
+  let resolution = PI * 2 / 3000;
 
   for (let angle = 0; angle < 2 * PI; angle += resolution) {
     let r = new RAY(angle);
     rays.push(r);
+    r.updatePosition(225, 300);
   }
+  noCursor();
 }
 
 function draw() {
-  translate(-width / 2, -height / 2);
+  // translate(-width / 2, -height / 2);
 
   background(0);
   for (let wall of walls) {
@@ -125,17 +141,23 @@ function draw() {
 
   fill(255, 100);
   circle(mouseX, mouseY, 5);
-  circle(mouseX, mouseY, 10);
   circle(mouseX, mouseY, 15);
+  circle(mouseX, mouseY, 30);
 
-  if(mouseIsPressed) {
+
+  introText();
+  patterns();
+
+  if (mouseIsPressed) {
     stroke(255);
     line(wallStart.x, wallStart.y, mouseX, mouseY);
   }
 }
 
-let wallStart;
 
+
+
+let wallStart;
 // wall creation
 function mousePressed() {
   wallStart = createVector(mouseX, mouseY);
@@ -144,4 +166,50 @@ function mousePressed() {
 function mouseReleased() {
   newWall = new WALL(wallStart.x, wallStart.y, mouseX, mouseY);
   walls.push(newWall);
+}
+
+function introText() {
+  noStroke();
+  fill(250);
+  textSize(20);
+  text("Ray casting", 70, 140);
+  fill(200);
+  textSize(15);
+  text("> Position of light is the position of your cursor", 70, 170);
+  text("> Draw walls by clicking and dragging with left mouse button", 70, 190);
+  fill(0);
+  text("> This line is visible due to the presence of light inside this box", 70, 210);
+  text("Press following keys to generate patterns:\n1: 30 tree forest\n2: 10 random walls", 120, 550);
+}
+
+function patterns() {
+  if (keyIsPressed) {
+    walls = [];
+    let t = new WALL(offset, offset, width - offset, offset);
+    let r = new WALL(width - offset, offset, width - offset, height - offset);
+    let b = new WALL(offset, height - offset, width - offset, height - offset);
+    let l = new WALL(offset, offset, offset, height - offset);
+    walls.push(t);
+    walls.push(r);
+    walls.push(b);
+    walls.push(l);
+    if (keyCode == 49) {
+      for (let i = 0; i < 50; i++) {
+        let x = random(100, width - 100);
+        let y = random(100, height - 100);
+        let wall = new WALL(x, y, random(x - 5, x + 5), random(y - 5, y + 5));
+        walls.push(wall);
+      }
+    }
+    else if (keyCode == 50) {
+      for (let i = 0; i < 10; i++) {
+        let x = random(100, width - 100);
+        let y = random(100, height - 100);
+        let wall = new WALL(x, y, random(x -250, x + 250), random(y - 250, y + 250));
+        walls.push(wall);
+      }
+    }
+
+  }
+
 }
