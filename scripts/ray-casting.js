@@ -1,8 +1,14 @@
+let walls = [];
+let rays = [];
+const offset = 10;
+const resolution = 2 * Math.PI / 70;
+
 class RAY {
   constructor(angle) {
-    this.position = createVector(undefined, undefined);
+    this.position = createVector(width / 2, height / 2);
     this.direction = createVector(Math.sin(angle), Math.cos(angle));
-    this.point = createVector(undefined, undefined);
+    // this.point = createVector(undefined, undefined);
+    this.t, this.u;
   }
 
   intersect(wall) {
@@ -18,28 +24,45 @@ class RAY {
 
     const den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
 
-
     if (den == 0) {
       return false;       // lines never meet
     }
 
-    let t, u;
+    this.t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
+    this.u = ((x1 - x3) * (y1 - y2) - (y1 - y3) * (x1 - x2)) / den;
 
-    t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
-    u = ((x1 - x3) * (y1 - y2) - (y1 - y3) * (x1 - x2)) / den;
-
-    if (t >= 0 && t <= 1 && u >= 0) {
-      this.point.x = x1 + t * (x2 - x1);
-      this.point.y = y1 + t * (y2 - y1);
-    }
-    return (t >= 0 && t <= 1 && u >= 0);
+    return (this.t >= 0 && this.t <= 1 && this.u >= 0);
   }
 
-  show(wall) {
-    if (this.intersect(wall)) {
-      stroke(200, 70);
-      line(this.position.x, this.position.y, this.point.x, this.point.y);
+  intersectionPoint(A, B) {
+    // x1, y1, x2, y2 are the coordinates of wall
+    let x = A.x + this.t * (B.x - A.x);
+    let y = A.y + this.t * (B.y - A.y);
+    return createVector(x, y);
+  }
+
+  showClosestOf(walls) {
+    let minPoint = createVector(Infinity, Infinity);
+    for (let wall of walls) {
+      if (this.intersect(wall)) {
+        let p = this.intersectionPoint(wall.A, wall.B);
+        if (dist(this.position.x, this.position.y, p.x, p.y) < dist(this.position.x, this.position.y, minPoint.x, minPoint.y)) minPoint = p;
+      }
     }
+    stroke(200, 70);
+    line(this.position.x, this.position.y, minPoint.x, minPoint.y);
+  }
+
+  showClosestOf(walls) {
+    let minPoint = createVector(Infinity, Infinity);
+    for (let wall of walls) {
+      if (this.intersect(wall)) {
+        let p = this.intersectionPoint(wall.A, wall.B);
+        if (dist(this.position.x, this.position.y, p.x, p.y) < dist(this.position.x, this.position.y, minPoint.x, minPoint.y)) minPoint = p;
+      }
+    }
+    stroke(200, 70);
+    line(this.position.x, this.position.y, minPoint.x, minPoint.y);
   }
 
   updatePosition(x, y) {
@@ -47,6 +70,7 @@ class RAY {
     this.position.y = y;
   }
 }
+
 
 
 
@@ -62,13 +86,8 @@ class WALL {
 }
 
 
-
-let walls = [];
-let rays = [];
-const offset = 10;
-
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight, WEBGL);
   let wall = new WALL(100, 500, 600, 600);
 
   let t = new WALL(offset, offset, width - offset, offset);
@@ -82,22 +101,22 @@ function setup() {
   walls.push(b);
   walls.push(l);
 
-  for (let angle = 0; angle < 2 * PI; angle += 0.063) {
+  for (let angle = 0; angle < 2 * PI; angle += resolution) {
     let r = new RAY(angle);
     rays.push(r);
   }
 }
 
 function draw() {
+  translate(-width / 2, -height / 2);
+
   background(0);
   for (let wall of walls) {
     wall.show();
   }
 
   for (let r of rays) {
+    r.showClosestOf(walls);
     r.updatePosition(mouseX, mouseY);
-    for (let wall of walls) {
-      r.show(wall);
-    }
   }
 }
