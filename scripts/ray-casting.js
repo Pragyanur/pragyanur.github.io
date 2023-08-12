@@ -1,11 +1,11 @@
 let walls = [];
 let rays = [];
 const offset = 10;
-const resolution = 2 * Math.PI / 70;
+const resolution = 2 * Math.PI / 200;
 
 class RAY {
   constructor(angle) {
-    this.position = createVector(width / 2, height / 2);
+    this.position = createVector(0, 0);
     this.direction = createVector(Math.sin(angle), Math.cos(angle));
     // this.point = createVector(undefined, undefined);
     this.t, this.u;
@@ -53,7 +53,7 @@ class RAY {
     line(this.position.x, this.position.y, minPoint.x, minPoint.y);
   }
 
-  showClosestOf(walls) {
+  vertices(walls) {
     let minPoint = createVector(Infinity, Infinity);
     for (let wall of walls) {
       if (this.intersect(wall)) {
@@ -61,8 +61,7 @@ class RAY {
         if (dist(this.position.x, this.position.y, p.x, p.y) < dist(this.position.x, this.position.y, minPoint.x, minPoint.y)) minPoint = p;
       }
     }
-    stroke(200, 70);
-    line(this.position.x, this.position.y, minPoint.x, minPoint.y);
+    return vertex(minPoint.x, minPoint.y);
   }
 
   updatePosition(x, y) {
@@ -84,6 +83,8 @@ class WALL {
     line(this.A.x, this.A.y, this.B.x, this.B.y);
   }
 }
+
+
 
 
 function setup() {
@@ -115,8 +116,13 @@ function draw() {
     wall.show();
   }
 
+  noStroke();
+  fill(255, 150);
+  beginShape();
   for (let r of rays) {
-    r.showClosestOf(walls);
+    // r.showClosestOf(walls);
+    r.vertices(walls);
     r.updatePosition(mouseX, mouseY);
   }
+  endShape();
 }
