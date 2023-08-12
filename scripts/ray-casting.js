@@ -1,7 +1,6 @@
 let walls = [];
 let rays = [];
-const offset = 10;
-const resolution = 2 * Math.PI / 200;
+const offset = 0;
 
 class RAY {
   constructor(angle) {
@@ -102,6 +101,8 @@ function setup() {
   walls.push(b);
   walls.push(l);
 
+  let resolution = PI * 2 / 2000;
+
   for (let angle = 0; angle < 2 * PI; angle += resolution) {
     let r = new RAY(angle);
     rays.push(r);
@@ -125,4 +126,26 @@ function draw() {
     r.updatePosition(mouseX, mouseY);
   }
   endShape();
+
+  fill(255, 100);
+  circle(mouseX, mouseY, 10);
+  circle(mouseX, mouseY, 30);
+  circle(mouseX, mouseY, 80);
+
+  if(mouseIsPressed) {
+    stroke(255);
+    line(wallStart.x, wallStart.y, mouseX, mouseY);
+  }
+}
+
+let wallStart;
+
+// wall creation
+function mousePressed() {
+  wallStart = createVector(mouseX, mouseY);
+}
+
+function mouseReleased() {
+  newWall = new WALL(wallStart.x, wallStart.y, mouseX, mouseY);
+  walls.push(newWall);
 }
