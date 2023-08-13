@@ -15,18 +15,15 @@ class RAY {
     const y1 = wall.A.y;
     const x2 = wall.B.x;
     const y2 = wall.B.y;
-
     const x3 = this.position.x;
     const y3 = this.position.y;
     const x4 = x3 + this.direction.x;
     const y4 = y3 + this.direction.y;
-
     const den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
 
     if (den == 0) {
       return false;       // lines never meet
     }
-
     this.t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
     this.u = ((x1 - x3) * (y1 - y2) - (y1 - y3) * (x1 - x2)) / den;
 
@@ -91,7 +88,6 @@ function setup() {
   walls.push(textRight);
   walls.push(textBottom);
   walls.push(textLeft);
-
   let t = new WALL(offset, offset, width - offset, offset);
   let r = new WALL(width - offset, offset, width - offset, height - offset);
   let b = new WALL(offset, height - offset, width - offset, height - offset);
@@ -100,19 +96,17 @@ function setup() {
   walls.push(r);
   walls.push(b);
   walls.push(l);
-
   let w1 = new WALL(700, 200, 600, 500);
   let w2 = new WALL(600, 500, 100, 500);
   let w3 = new WALL(1000, 100, 1200, 500);
   walls.push(w1);
   walls.push(w2);
   walls.push(w3);
-
+  // initialize poisition of mouse/light
   mouseX = 225;
   mouseY = 300;
-
+  // ray emmited from all angles
   let resolution = PI * 2 / 3000;
-
   for (let angle = 0; angle < 2 * PI; angle += resolution) {
     let r = new RAY(angle);
     rays.push(r);
@@ -123,7 +117,6 @@ function setup() {
 
 function draw() {
   // translate(-width / 2, -height / 2);
-
   background(0);
   for (let wall of walls) {
     wall.show();
@@ -144,7 +137,6 @@ function draw() {
   circle(mouseX, mouseY, 15);
   circle(mouseX, mouseY, 30);
 
-
   introText();
   patterns();
 
@@ -153,9 +145,6 @@ function draw() {
     line(wallStart.x, wallStart.y, mouseX, mouseY);
   }
 }
-
-
-
 
 let wallStart;
 // wall creation
@@ -205,11 +194,9 @@ function patterns() {
       for (let i = 0; i < 10; i++) {
         let x = random(100, width - 100);
         let y = random(100, height - 100);
-        let wall = new WALL(x, y, random(x -250, x + 250), random(y - 250, y + 250));
+        let wall = new WALL(x, y, random(x - 250, x + 250), random(y - 250, y + 250));
         walls.push(wall);
       }
     }
-
   }
-
 }
