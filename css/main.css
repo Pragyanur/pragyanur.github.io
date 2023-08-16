@@ -153,6 +153,26 @@ h4:hover {
     font-size: 15px;
 }
 
+.source-code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 17px;
+    background-color: rgb(107, 0, 0);
+    padding: 3px;
+    border: rgb(158, 38, 38) solid 1px;
+    color: rgb(175, 160, 114);
+    box-shadow: none;
+    text-shadow: none;
+}
+
+.source-code:hover {
+    color: rgb(229, 208, 147);
+    background-color: rgb(145, 10, 10);
+    border: rgb(191, 51, 51) solid 1px;
+    text-shadow: none;
+    box-shadow: 2px 3px 1px rgb(0, 0, 0);
+    transition: 0.3s;
+}
+
 .elementContainer {
     display: flex;
     flex-direction: column;
