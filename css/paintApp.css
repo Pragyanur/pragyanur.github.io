@@ -1,0 +1,19 @@
+button {
+  padding: 10px;
+  border: 2px black solid;
+  background-color: white;
+  box-shadow: 2px 2px 0px black;
+}
+button:hover {
+  background-color: rgb(166, 166, 166);
+}
+button:focus {
+  background-color: rgb(219, 152, 152);
+  box-shadow: 0px 0px 0px black;
+  transform: translate(2px, 2px);
+}
+:target {
+  background-color: rgb(219, 152, 152);
+  box-shadow: 0px 0px 0px black;
+  transform: translate(2px, 2px);
+}
