@@ -21,7 +21,7 @@ class Bee {
   behaviour(bees) {
     for (let bee of bees) {
       if (dist(this.pos.x, this.pos.y, bee.pos.x, bee.pos.y) < threshhold) {
-        sumX
+        
       }
     }
 
