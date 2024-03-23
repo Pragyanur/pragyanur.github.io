@@ -10,7 +10,7 @@ class Dots {
     this.offset = random(10);
   }
   animate() {
-    this.position.y -= this.color[0] * 0.025 * sin(this.color[0] * 0.25 * frameCount);
+    this.position.y -= this.color[0] * 0.025 * sin(this.offset + this.color[0] * 0.25 * frameCount);
   }
   shade() {
     fill(10);
@@ -24,7 +24,7 @@ class Dots {
     let li = [this.color[0], 90, 40];
     fill(...li);
     stroke(...li);
-    text(String(this.color[0]).slice(0,4), this.position.x - SIZE / 4, this.position.y + SIZE / 10);
+    // text(String(this.color[0]).slice(0,4), this.position.x - SIZE / 4, this.position.y + SIZE / 10);
   }
 }
 
