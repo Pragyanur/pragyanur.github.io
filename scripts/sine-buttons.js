@@ -21,6 +21,8 @@ class Dots {
   show() {
     fill(...this.color);
     circle(this.position.x, this.position.y, SIZE);
+    fill(this.color[0], 80, 50);
+    text(String(this.color[0]).slice(0,4), this.position.x - SIZE / 4, this.position.y + SIZE / 10);
   }
 }
 
