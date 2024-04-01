@@ -1,100 +1,118 @@
-const MAX_SPEED = -15;
-const MAX_REVERSE = 15;
-const MAX_STEER = 5;
+const MAX_SPEED = 15;
+const MAX_REVERSE = -6;
 
+class Car {
+  constructor(x, y, size = 10) {
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.angle = 0;
+    this.carSpeed = 0;
+    this.size = size;
+    this.FoB = 0;
+  }
+  keyAction() {
+    this.steer();
+    // FORWARD
+    if (keyIsDown(38)) {
+      this.FoB = 1;
+      if (this.carSpeed < MAX_SPEED) {
+        this.accelerate(0.2);
+      }
+      if (this.carSpeed >= MAX_SPEED) {
+        this.carSpeed = MAX_SPEED;
+      }
+    }
+    // BACKWARD
+    else if (keyIsDown(40)) {
+      this.FoB = -1;
+      if (this.carSpeed > MAX_REVERSE) {
+        this.accelerate(-0.2);
+      }
+      if (this.carSpeed <= MAX_REVERSE) {
+        this.carSpeed = MAX_REVERSE;
+      }
+    }
+    if (!keyIsDown(38) && !keyIsDown(40)) {
+      if (this.carSpeed > 0.2) {
+        this.accelerate(-0.2);
+      }
+      else if (this.carSpeed < -0.2) {
+        this.accelerate(0.2);
+      }
+      else {
+        this.carSpeed = 0;
+        this.FoB = 0;
+      }
+    }
+  }
 
-const carSpeed = 2;
-const steerSpeed = 1;
+  steer() {
+    let dir;
+    // DIRECTION OF MOVEMENT
+    dir = this.carSpeed >= 0 ? 1 : -1;
+    if (this.FoB != 0) {
+      if (keyIsDown(37)) {
+        this.angle += dir * 3;
+      }
+      else if (keyIsDown(39)) {
+        this.angle -= dir * 3;
+      }
+    }
 
-const zeroing = 0.3;
-const steerback = 1;
+  }
 
-const wheelPosition = 20;
+  accelerate(fac) {
+    this.carSpeed += fac;
+  }
+
+  show() {
+    let w = this.size;
+    let l = 2 * this.size;
+    translate(this.position.x, this.position.y);
+    rotate(-this.angle);
+    translate(-w / 2, -l / 2);
+    fill(200);
+    rect(0, 0, w, l);
+    fill(30);
+    rect(2, 0 + l / 8, w - 4, l / 7);
+    rect(2, 0 + l / 2, w - 4, l / 5);
+  }
+  update() {
+
+    this.velocity.x = sin(this.angle);
+    this.velocity.y = cos(this.angle);
+    this.velocity.normalize();
+    this.position.x += this.velocity.x * this.carSpeed;
+    this.position.y += this.velocity.y * this.carSpeed;
+
+    // REPEAT CANVAS
+    if (this.position.x > width) {
+      this.position.x = 0;
+    }
+    if (this.position.x < 0) {
+      this.position.x = width;
+    }
+    if (this.position.y > height) {
+      this.position.y = 0;
+    }
+    if (this.position.y < 0) {
+      this.position.y = height;
+    }
+  }
+
+}
 
 let car;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  class Vec {
-    constructor() {
-      this.position = createVector(width / 2, height / 2);
-      this.velocity = createVector(0, 0);
-    }
-
-    show() {
-      strokeWeight(5);
-      stroke(0);
-      line(this.position.x - wheelPosition, this.position.y, this.position.x + this.velocity.x - wheelPosition, this.position.y + wheelPosition);
-      line(this.position.x + wheelPosition, this.position.y, this.position.x + this.velocity.x + wheelPosition, this.position.y + wheelPosition);
-
-      strokeWeight(10);
-      stroke(map(this.velocity.y, MAX_SPEED, MAX_REVERSE, 0, 255), map(this.velocity.y, MAX_SPEED, MAX_REVERSE, 255, 0), 0);
-      line(this.position.x, this.position.y, this.position.x, this.position.y + this.velocity.y);
-    }
-
-    update() {
-      this.deAcceleration();
-      this.rePositionSteering();
-      this.position.y += this.velocity.y;
-      this.position.x += this.velocity.x;
-      if (this.position.x > width) {
-        this.position.x = 0;
-      }
-      if (this.position.x < 0) {
-        this.position.x = width;
-      }
-      if (this.position.y > height) {
-        this.position.y = 0;
-      }
-      if (this.position.y < 0) {
-        this.position.y = height;
-      }
-    }
-
-    deAcceleration() {
-      let deacceleration = zeroing;
-      if (this.velocity.x != 0) {
-        deacceleration = zeroing + 0.3;
-      }
-      else this.velocity.x = 0;
-
-      if (this.velocity.y < 0) {
-        this.velocity.y += deacceleration;
-      }
-      else this.velocity.y -= deacceleration;
-    }
-
-    rePositionSteering() {
-      if (!keyIsDown(37) && !keyIsDown(39)) {
-        this.velocity.x += (this.velocity.x < 0) * steerback - (this.velocity.x > 0) * steerback; // minimizing conditions
-      }
-    }
-
-    keyAction() {
-      // accelerating
-      if (keyIsDown(38) && this.velocity.y >= MAX_SPEED) {
-        this.velocity.y -= carSpeed;
-      }
-      else if (keyIsDown(40) && this.velocity.y <= MAX_REVERSE) {
-        this.velocity.y += carSpeed;
-      }
-      // steering
-      if (keyIsDown(37) && this.velocity.x >= -MAX_STEER) {
-        this.velocity.x -= steerSpeed;
-      }
-      else if (keyIsDown(39) && this.velocity.x <= MAX_STEER) {
-        this.velocity.x += steerSpeed;
-      }
-    }
-  }
-
-  // object for representation
-  car = new Vec();
+  angleMode(DEGREES);
+  car = new Car(300, 300, 20);
 }
 
 function draw() {
-  background(150);
-  car.show();
-  car.update();
+  background(50);
   car.keyAction();
+  car.update();
+  car.show();
 }
