@@ -8,22 +8,23 @@ class Car {
     this.angle = 0;
     this.carSpeed = 0;
     this.size = size;
-    this.f_b = 0;
+    this.FoB = 0;
   }
   keyAction() {
     this.steer();
+    // FORWARD
     if (keyIsDown(38)) {
-      this.f_b = 1;
+      this.FoB = 1;
       if (this.carSpeed < MAX_SPEED) {
         this.accelerate(0.2);
-
       }
       if (this.carSpeed >= MAX_SPEED) {
         this.carSpeed = MAX_SPEED;
       }
     }
+    // BACKWARD
     else if (keyIsDown(40)) {
-      this.f_b = -1;
+      this.FoB = -1;
       if (this.carSpeed > MAX_REVERSE) {
         this.accelerate(-0.2);
       }
@@ -32,27 +33,32 @@ class Car {
       }
     }
     if (!keyIsDown(38) && !keyIsDown(40)) {
-      if (this.carSpeed > 0) {
+      if (this.carSpeed > 0.2) {
         this.accelerate(-0.2);
       }
-      this.autoBrake();
-    }
-  }
-
-  autoBrake() {
-    if (this.carSpeed < 1.5) {
-      this.carSpeed = 0;
-      this.f_b = 0;
+      else if (this.carSpeed < -0.2) {
+        this.accelerate(0.2);
+      }
+      else {
+        this.carSpeed = 0;
+        this.FoB = 0;
+      }
     }
   }
 
   steer() {
-    if (keyIsDown(37)) {
-      this.angle += this.f_b * 3;
+    let dir;
+    // DIRECTION OF MOVEMENT
+    dir = this.carSpeed >= 0 ? 1 : -1;
+    if (this.FoB != 0) {
+      if (keyIsDown(37)) {
+        this.angle += dir * 3;
+      }
+      else if (keyIsDown(39)) {
+        this.angle -= dir * 3;
+      }
     }
-    else if (keyIsDown(39)) {
-      this.angle -= this.f_b * 3;
-    }
+
   }
 
   accelerate(fac) {
@@ -67,16 +73,19 @@ class Car {
     translate(-w / 2, -l / 2);
     fill(200);
     rect(0, 0, w, l);
-    fill(50);
+    fill(30);
     rect(2, 0 + l / 8, w - 4, l / 7);
     rect(2, 0 + l / 2, w - 4, l / 5);
   }
   update() {
+
     this.velocity.x = sin(this.angle);
     this.velocity.y = cos(this.angle);
     this.velocity.normalize();
     this.position.x += this.velocity.x * this.carSpeed;
     this.position.y += this.velocity.y * this.carSpeed;
+
+    // REPEAT CANVAS
     if (this.position.x > width) {
       this.position.x = 0;
     }
@@ -90,6 +99,7 @@ class Car {
       this.position.y = height;
     }
   }
+
 }
 
 let car;
