@@ -23,7 +23,6 @@ function quickSort(array) {
   return [...quickSort(left), pivot, ...quickSort(right)];
 }
 
-
 class Rectangles {
   constructor(arr) {
     this.list = arr;
@@ -31,23 +30,32 @@ class Rectangles {
     this.i = 0;
     this.j = 0;
     this.l = width / this.n;
-    this.h = height / Math.max(...this.list);
+    this.h = (height - 20) / Math.max(...this.list);
+
+    this.bubSor = this.list;
   }
-  show() {
+  showBubble() {
     for (let k = 0; k < this.n; k++) {
       if (k == this.j) fill(200, 0, 0);
       else if (k >= this.n - this.i) fill(0, 200, 0);
       else fill(200);
       rect(k * this.l, height, this.l, -this.list[k] * this.h);
-      text(this.list[k],)
+      fill(100, 100, 255);
+      textSize(this.l * 0.8);
+      text(String(this.list[k]), k * this.l, height - this.list[k] * this.h - 5);
     }
 
+  }
+  showQuick() {
+    for (let k = 0; k < this.n; k++) {
+      rect(k * this.l, height, this.l, -this.list[k] * this.h);
+    }
   }
   bubbleSort() {
     if (this.i < this.n - 1) {
       if (this.j < this.n - this.i - 1) {
-        if (this.list[this.j] > this.list[this.j + 1]) {
-          [this.list[this.j], this.list[this.j + 1]] = [this.list[this.j + 1], this.list[this.j]];
+        if (this.bubSor[this.j] > this.bubSor[this.j + 1]) {
+          [this.bubSor[this.j], this.bubSor[this.j + 1]] = [this.bubSor[this.j + 1], this.bubSor[this.j]];
         }
         this.j++;
       }
@@ -61,10 +69,21 @@ class Rectangles {
       this.i = N + 1;
     }
   }
+  quickSort(quiSor = this.list) {
+    let pivotIndex, pivot, left, right;
+    if (quiSor.length > 1) {
+      pivotIndex = Math.floor(quiSor.length / 2);
+      pivot = quiSor[pivotIndex];
+      left = quiSor.filter((el) => el < pivot);
+      right = quiSor.filter((el) => el > pivot);
+      quiSor = [...quickSort(left), pivot, ...quickSort(right)];
+      console.log(quiSor);
+    }
+  }
 }
 
-let a;
-const N = 100;
+let a, nums;
+const N = 80;
 
 function shuffleArray(array) {
   return array.sort(() => Math.random() - 0.5);
@@ -73,14 +92,15 @@ function shuffleArray(array) {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   frameRate(60);
-  let nums = [];
+  nums = [];
   for (let i = 1; i <= N; i++) nums.push(i);
-  shuffleArray(nums);
+  nums = shuffleArray(nums);
   a = new Rectangles(nums);
 }
 
 function draw() {
   background(30);
-  a.show();
+  a.showBubble();
   a.bubbleSort();
+  a.quickSort();
 }
