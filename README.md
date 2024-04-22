@@ -1,5 +1,6 @@
 # pragyanur.github.io
 (building...)
+!["preview"](/store/preview.png)
 
 ## Portfolio website and profile
 
