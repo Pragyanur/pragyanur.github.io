@@ -29,6 +29,9 @@ class Ball {
     if (dist(player.line_1, player.pos_1, this.pos.x, this.pos.y) < player.size - BALL_SIZE / 2) {
       this.vel = player.hit(this);
     }
+    if (dist(player.line_2, player.pos_2, this.pos.x, this.pos.y) < player.size - BALL_SIZE / 2) {
+      this.vel = player.hit(this);
+    }
   }
   show() {
     push();
@@ -42,13 +45,15 @@ class Ball {
   }
 }
 
-class Player {
+class Players {
   constructor() {
+    this.size = height / 10;
+    this.glow_1 = 0;
+    this.glow_2 = 0;
     this.rot_1 = 0;
     this.rot_2 = 0;
     this.pos_1 = 0;
     this.pos_2 = 0;
-    this.size = height / 8;
     this.line_1 = width / 2 - this.size;
     this.line_2 = -width / 2 + this.size;
     this.rAcc_1 = 0;
@@ -56,48 +61,74 @@ class Player {
   }
 
   show() {
+    // player 1
     push();
     ambientLight(80);
     specularMaterial(250);
     stroke(255);
     translate(this.line_1, this.pos_1, 0);
     rotateZ(this.rot_1);
-    fill(255, 100);
+    fill(255, this.glow_1);
+    box(0, this.size, this.size);
+    pop();
+    // player 2
+    push();
+    ambientLight(80);
+    specularMaterial(250);
+    stroke(255);
+    translate(this.line_2, this.pos_2, 0);
+    rotateZ(this.rot_2);
+    fill(255, this.glow_2);
     box(0, this.size, this.size);
     pop();
   }
 
   handleKeys() {
     const rotationSpeed = 0.01;
-    const positionSpeed = 7;
+    const positionSpeed = 10;
+
     if (keys[UP_ARROW]) this.pos_1 -= positionSpeed;
     if (keys[DOWN_ARROW]) this.pos_1 += positionSpeed;
     if (keys[LEFT_ARROW]) this.rAcc_1 -= rotationSpeed;
     if (keys[RIGHT_ARROW]) this.rAcc_1 += rotationSpeed;
+    if (keys[87]) this.pos_2 -= positionSpeed;
+    if (keys[83]) this.pos_2 += positionSpeed;
+    if (keys[65]) this.rAcc_2 -= rotationSpeed;
+    if (keys[68]) this.rAcc_2 += rotationSpeed;
   }
 
   update() {
+    if (this.glow_1 != 100) this.glow_1 *= 0.9;
+    if (this.glow_2 != 100) this.glow_2 *= 0.9;
+
     this.pos_1 = constrain(this.pos_1, -height / 2 + this.size / 2, height / 2 - this.size / 2);
     this.rAcc_1 = constrain(this.rAcc_1, -1, 1);
     this.rot_1 += this.rAcc_1;
     this.rot_1 = this.rot_1 % PI;
 
+    this.pos_2 = constrain(this.pos_2, -height / 2 + this.size / 2, height / 2 - this.size / 2);
+    this.rAcc_2 = constrain(this.rAcc_2, -1, 1);
+    this.rot_2 += this.rAcc_2;
+    this.rot_2 = this.rot_2 % PI;
+
     if (this.rAcc_1 != 0) this.rAcc_1 *= 0.9;
-    if (this.pAcc_1 != 0) this.pAcc_1 *= 0.9;
+    if (this.rAcc_2 != 0) this.rAcc_2 *= 0.9;
+
   }
 
   hit(ball) {
-    const bx = ball.pos.x;
-    const by = ball.pos.y;
-
     let A = createVector(this.line_1 - (this.size / 2) * sin(-this.rot_1), this.pos_1 - (this.size / 2) * cos(-this.rot_1));
     let B = createVector(this.line_1 + (this.size / 2) * sin(-this.rot_1), this.pos_1 + (this.size / 2) * cos(-this.rot_1));
+    let A2 = createVector(this.line_2 - (this.size / 2) * sin(-this.rot_2), this.pos_2 - (this.size / 2) * cos(-this.rot_2));
+    let B2 = createVector(this.line_2 + (this.size / 2) * sin(-this.rot_2), this.pos_2 + (this.size / 2) * cos(-this.rot_2));
     let normal_1 = createVector(-this.size * cos(this.rot_1) / 2, -this.size * sin(this.rot_1) / 2);
-    let normal_2 = createVector(-this.size * cos(this.rot_2) / 2, this.size * sin(this.rot_2) / 2);
+    let normal_2 = createVector(-this.size * cos(this.rot_2) / 2, -this.size * sin(this.rot_2) / 2);
     let initialVelocity = createVector(ball.vel.x, ball.vel.y);
-    let shortestDist = abs((A.y - B.y) * bx - (A.x - B.x) * by + (A.x * B.y - A.y * B.x)) / sqrt((A.y - B.y) ** 2 + (A.x - B.x) ** 2);
+    let shortestDist_1 = abs((A.y - B.y) * ball.pos.x - (A.x - B.x) * ball.pos.y + (A.x * B.y - A.y * B.x)) / sqrt((A.y - B.y) ** 2 + (A.x - B.x) ** 2);
+    let shortestDist_2 = abs((A2.y - B2.y) * ball.pos.x - (A2.x - B2.x) * ball.pos.y + (A2.x * B2.y - A2.y * B2.x)) / sqrt((A2.y - B2.y) ** 2 + (A2.x - B2.x) ** 2);
 
     line(this.line_1, this.pos_1, this.line_1 + normal_1.x, this.pos_1 + normal_1.y);
+    line(this.line_2, this.pos_2, this.line_2 - normal_2.x, this.pos_2 - normal_2.y);
 
     normal_1.normalize();
     normal_2.normalize();
@@ -106,11 +137,15 @@ class Player {
     let dotProduct_1 = dotProd(initialVelocity, normal_1);
     let dotProduct_2 = dotProd(initialVelocity, normal_2);
 
-    if (shortestDist < BALL_SIZE / 2) {
-      let reflect = createVector(0, 0);
+    if (shortestDist_1 < BALL_SIZE / 2) {
+      this.glow_1 = 255;
       // r=d−2(d⋅n)n
-      reflect.x = initialVelocity.x - 2 * dotProduct_1 * normal_1.x;
-      reflect.y = initialVelocity.y - 2 * dotProduct_1 * normal_1.y;
+      let reflect = createVector(initialVelocity.x - 2 * dotProduct_1 * normal_1.x, initialVelocity.y - 2 * dotProduct_1 * normal_1.y);
+      return reflect;
+    }
+    if (shortestDist_2 < BALL_SIZE / 2) {
+      let reflect = createVector(initialVelocity.x - 2 * dotProduct_2 * normal_2.x, initialVelocity.y - 2 * dotProduct_2 * normal_2.y);
+      this.glow_2 = 255;
       return reflect;
     }
     return ball.vel;
@@ -123,6 +158,7 @@ function dotProd(V1, V2) {
 
 function keyPressed() {
   keys[keyCode] = true;
+  console.log(keyCode);
 }
 
 function keyReleased() {
@@ -212,7 +248,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   pfSize = 4 * width / 5;
   B1 = new Background(pfSize);
-  Player1 = new Player();
+  Player1 = new Players();
   ball = new Ball(0, 0);
 }
 
