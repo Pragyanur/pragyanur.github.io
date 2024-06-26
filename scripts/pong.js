@@ -5,6 +5,7 @@ let B1;
 let ball;
 let pfSize = 500;
 let keys = {};
+let font;
 
 function dotProd(V1, V2) {
   return V1.x * V2.x + V1.y * V2.y;
@@ -157,13 +158,13 @@ class Players {
       // r=d−2(d⋅n)n
       let reflect = createVector(initialVelocity.x - 2 * dotProduct_1 * normal_1.x, initialVelocity.y - 2 * dotProduct_1 * normal_1.y);
       this.glow_1 = 255;
-      ball.fac += abs(dotProduct_1 * this.rAcc_1) * SPEED ** 3;
+      ball.fac += abs(dotProduct_1 * this.rAcc_1) * SPEED ** 2;
       return reflect;
     }
     if (shortestDist_2 < BALL_SIZE / 2) {
       let reflect = createVector(initialVelocity.x - 2 * dotProduct_2 * normal_2.x, initialVelocity.y - 2 * dotProduct_2 * normal_2.y);
       this.glow_2 = 255;
-      ball.fac += abs(dotProduct_2 * this.rAcc_2) * SPEED ** 3;
+      ball.fac += abs(dotProduct_2 * this.rAcc_2) * SPEED ** 2;
       return reflect;
     }
     return ball.vel;
@@ -174,9 +175,11 @@ class Players {
 class Background {
   constructor(platform) {
     this.platformSize = platform;
-    this.leftGlow = 70;
-    this.rightGlow = 70;
+    this.leftGlow = 80;
+    this.rightGlow = 80;
     this.goalPost = 0;
+    this.leftGoals = 0;
+    this.rightGoals = 0;
   }
   show() {
     let h = 4 * height / 5;
@@ -250,25 +253,42 @@ class Background {
     translate(0, 0, h / 4);
     box(width, height, 0);
     pop();
+    // score
+    push();
+    fill(0, 0, this.rightGlow, this.rightGlow);
+    textFont(font);
+    textSize(100 + this.rightGlow / 2);
+    textAlign(CENTER, CENTER);
+    text(this.leftGoals, -width / 10, 0);
+    pop();
+    push();
+    fill(this.leftGlow, 0, 0, this.leftGlow);
+    textFont(font);
+    textSize(100 + this.leftGlow / 2);
+    textAlign(CENTER, CENTER);
+    text(this.rightGoals, width / 10, 0);
+    pop();
   }
 
   reset() {
-    if (this.leftGlow > 70) this.leftGlow -= 10;
-    else this.leftGlow = 70;
+    if (this.leftGlow > 80) this.leftGlow -= 5;
+    else this.leftGlow = 80;
 
-    if (this.rightGlow > 70) this.rightGlow -= 10;
-    else this.rightGlow = 70;
+    if (this.rightGlow > 80) this.rightGlow -= 5;
+    else this.rightGlow = 80;
 
   }
 
   isGoal(ball) {
     let h = height / 8;
     if (ball.pos.y < height / 2 - h && ball.pos.y > -height / 2 + h) {
-      if (ball.pos.x <= - width / 2 + BALL_SIZE) {
+      if (ball.pos.x <= - width / 2 + BALL_SIZE / 2) {
         this.leftGlow = 255;
+        this.rightGoals++;
       }
-      if (ball.pos.x >= width / 2 - BALL_SIZE) {
+      if (ball.pos.x >= width / 2 - BALL_SIZE / 2) {
         this.rightGlow = 255;
+        this.leftGoals++;
       }
     }
   }
@@ -280,6 +300,7 @@ function setup() {
   B1 = new Background(pfSize);
   Player1 = new Players();
   ball = new Ball(0, 0);
+  font = loadFont('/store/MigaeSemibold-3zd2M.otf');
 }
 
 function draw() {
