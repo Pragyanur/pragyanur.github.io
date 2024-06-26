@@ -19,6 +19,7 @@ class Ball {
     if (this.pos.x < -width / 2 || this.pos.x > width / 2) this.vel.x = -this.vel.x;
     if (this.pos.y < -height / 2 || this.pos.y > height / 2) this.vel.y = -this.vel.y;
     if (this.fac != 5) this.fac += this.fac > SPEED ? -1 : 1;
+    // debug
     if (this.pos.x < -width / 2) this.pos.x++;
     if (this.pos.x > width / 2) this.pos.x--;
     if (this.pos.y < -height / 2) this.pos.y++;
