@@ -1,4 +1,4 @@
-const BALL_SIZE = 16;
+const BALL_SIZE = 10;
 const SPEED = 10;
 let Player1;
 let B1;
@@ -26,7 +26,7 @@ class Ball {
     if (this.pos.y > height / 2) this.pos.y -= 5;
   }
   reflect(player) {
-    if (dist(player.line, player.pos, this.pos.x, this.pos.y) < player.size - BALL_SIZE / 2) {
+    if (dist(player.line_1, player.pos_1, this.pos.x, this.pos.y) < player.size - BALL_SIZE / 2) {
       this.vel = player.hit(this);
     }
   }
@@ -48,13 +48,11 @@ class Player {
     this.rot_2 = 0;
     this.pos_1 = 0;
     this.pos_2 = 0;
-    this.size = height / 10;
+    this.size = height / 8;
     this.line_1 = width / 2 - this.size;
     this.line_2 = -width / 2 + this.size;
     this.rAcc_1 = 0;
     this.rAcc_2 = 0;
-    this.pAcc_1 = 0;
-    this.pAcc_2 = 0;
   }
 
   show() {
@@ -62,17 +60,16 @@ class Player {
     ambientLight(80);
     specularMaterial(250);
     stroke(255);
-    shininess(50);
     translate(this.line_1, this.pos_1, 0);
     rotateZ(this.rot_1);
-    fill(255,50);
+    fill(255, 100);
     box(0, this.size, this.size);
     pop();
   }
 
   handleKeys() {
     const rotationSpeed = 0.01;
-    const positionSpeed = 10;
+    const positionSpeed = 7;
     if (keys[UP_ARROW]) this.pos_1 -= positionSpeed;
     if (keys[DOWN_ARROW]) this.pos_1 += positionSpeed;
     if (keys[LEFT_ARROW]) this.rAcc_1 -= rotationSpeed;
@@ -84,7 +81,9 @@ class Player {
     this.rAcc_1 = constrain(this.rAcc_1, -1, 1);
     this.rot_1 += this.rAcc_1;
     this.rot_1 = this.rot_1 % PI;
+
     if (this.rAcc_1 != 0) this.rAcc_1 *= 0.9;
+    if (this.pAcc_1 != 0) this.pAcc_1 *= 0.9;
   }
 
   hit(ball) {
@@ -109,10 +108,9 @@ class Player {
 
     if (shortestDist < BALL_SIZE / 2) {
       let reflect = createVector(0, 0);
-      // projection of velocity on normal
       // r=d−2(d⋅n)n
-      reflect.x = -2 * dotProduct_1 * normal_1.x + initialVelocity.x;
-      reflect.y = -2 * dotProduct_1 * normal_1.y + initialVelocity.y;
+      reflect.x = initialVelocity.x - 2 * dotProduct_1 * normal_1.x;
+      reflect.y = initialVelocity.y - 2 * dotProduct_1 * normal_1.y;
       return reflect;
     }
     return ball.vel;
@@ -162,7 +160,7 @@ class Background {
     plane(width, h / 2);
     pop();
     // left
-    fill(255, 0, 0, 70);
+    fill(100, 0, 0);
     noStroke();
     push();
     translate(-width / 2, -height / 2 + height / 20);
@@ -175,7 +173,7 @@ class Background {
     plane(h / 2, height / 10);
     pop();
     //right
-    fill(0, 0, 255, 70);
+    fill(0, 0, 100);
     noStroke();
     push();
     translate(width / 2, -height / 2 + height / 20);
