@@ -56,12 +56,12 @@ function setup() {
     b = [numberOfBalls];
 
     for (i = 0; i < numberOfBalls; i++) {
-        b[i] = new Ball(random(50, 200));
+        b[i] = new Ball(random(50, width / 10));
     }
 }
 
 function draw() {
-    background(20, 0, 10);
+    background(0, 0, 0);
 
     for (i = 0; i < numberOfBalls; i++) {
         b[i].show();
