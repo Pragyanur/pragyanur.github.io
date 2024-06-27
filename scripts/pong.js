@@ -11,7 +11,6 @@ let font;               // load font from store
 function dotProd(V1, V2) {
   return V1.x * V2.x + V1.y * V2.y;
 }
-
 // if keyboard "key" is pressed then "value" = true
 function keyPressed() {
   keys[keyCode] = true;
@@ -20,7 +19,6 @@ function keyPressed() {
 function keyReleased() {
   keys[keyCode] = false;
 }
-
 // ball class for ball functionalities (can be optimized with Players class into one class 'game')
 class Ball {
   constructor(x = width / 2, y = height / 2) {
@@ -29,7 +27,6 @@ class Ball {
     this.vel.normalize();                       // unit velocity
     this.fac = SPEED;                           // speed as a factor (vel * fac)
   }
-
   update() {
     this.vel.normalize();
     this.pos.x += this.vel.x * this.fac;        // update position by incrementing with direction and speed
@@ -45,7 +42,6 @@ class Ball {
     if (this.pos.y < -height / 2) this.pos.y += 5;
     if (this.pos.y > height / 2) this.pos.y -= 5;
   }
-
   // bouncing the ball off the player boards or reflection
   reflect(players) {
     // only true when ball is near the boards
@@ -56,7 +52,6 @@ class Ball {
       this.vel = players.hit(this);
     }
   }
-
   // display ball
   show() {
     push();
@@ -69,7 +64,7 @@ class Ball {
     pop();
   }
 }
-
+// players definition and functionalities
 class Players {
   constructor() {
     this.size = height / 8;                 // size of each board
@@ -194,7 +189,6 @@ class Players {
     return ball.vel;    // return initial velocity if not hit
   }
 }
-
 // the bounding box
 class Background {
   constructor(/*platform*/) {
@@ -322,7 +316,7 @@ class Background {
     }
   }
 }
-
+// main setup
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   pfSize = 4 * width / 5;
@@ -331,7 +325,7 @@ function setup() {
   ball = new Ball(0, 0);
   font = loadFont('/store/MigaeSemibold-3zd2M.otf');
 }
-
+// main loop
 function draw() {
   background(0);
   pointLight(255, 255, 255, 0, 0, height / 3);
