@@ -23,7 +23,7 @@ function keyReleased() {
 class Ball {
   constructor(x = width / 2, y = height / 2) {
     this.pos = createVector(x, y);
-    this.vel = createVector(random(-2, 2), 0.1);
+    this.vel = createVector(random(-2, 2), 0);
     this.fac = SPEED;
   }
 
@@ -53,7 +53,7 @@ class Ball {
   show() {
     push();
     translate(this.pos.x, this.pos.y);
-    ambientLight(180);
+    ambientLight(150);
     specularMaterial(250);
     noStroke();
     fill(200);
@@ -65,8 +65,8 @@ class Ball {
 class Players {
   constructor() {
     this.size = height / 8;
-    this.glow_1 = 0;
-    this.glow_2 = 0;
+    this.glow_1 = 80;
+    this.glow_2 = 80;
     this.rot_1 = 0;
     this.rot_2 = 0;
     this.pos_1 = 0;
@@ -80,27 +80,27 @@ class Players {
   show() {
     // player 1
     push();
-    ambientLight(100);
-    stroke(255);
+    ambientLight(250);
+    stroke(this.glow_1, 0, 0);
     translate(this.line_1, this.pos_1, 0);
     rotateZ(this.rot_1);
-    fill(this.glow_1, 10, 10, this.glow_1);
-    box(0, this.size, this.size);
+    fill(255, this.glow_1);
+    box(this.size / 10, this.size, this.size);
     pop();
     // player 2
     push();
-    ambientLight(100);
-    stroke(255);
+    ambientLight(250);
+    stroke(0, 0, 50 + this.glow_2);
     translate(this.line_2, this.pos_2, 0);
     rotateZ(this.rot_2);
     fill(255, this.glow_2);
-    box(0, this.size, this.size);
+    box(this.size / 10, this.size, this.size);
     pop();
   }
 
   handleKeys() {
     const rotationSpeed = 0.01;
-    const positionSpeed = 15;
+    const positionSpeed = 12;
 
     if (keys[UP_ARROW]) this.pos_1 -= positionSpeed;
     if (keys[DOWN_ARROW]) this.pos_1 += positionSpeed;
@@ -113,8 +113,8 @@ class Players {
   }
 
   update() {
-    if (this.glow_1 > 100) this.glow_1 -= 10; else this.glow_1 = 100;
-    if (this.glow_2 > 100) this.glow_2 -= 10; else this.glow_2 = 100;
+    if (this.glow_1 > 80) this.glow_1 -= 10; else this.glow_1 = 80;
+    if (this.glow_2 > 80) this.glow_2 -= 10; else this.glow_2 = 80;
 
     this.pos_1 = constrain(this.pos_1, -height / 2 + this.size / 2, height / 2 - this.size / 2);
     this.rAcc_1 = constrain(this.rAcc_1, -2, 2);
@@ -152,17 +152,18 @@ class Players {
     let dotProduct_1 = dotProd(initialVelocity, normal_1);
     let dotProduct_2 = dotProd(initialVelocity, normal_2);
 
+
     if (shortestDist_1 < BALL_SIZE / 2) {
       // r=d−2(d⋅n)n
       let reflect = createVector(initialVelocity.x - 2 * dotProduct_1 * normal_1.x, initialVelocity.y - 2 * dotProduct_1 * normal_1.y);
       this.glow_1 = 255;
-      ball.fac += abs(dotProduct_1 * this.rAcc_1) * SPEED ** 2;
+      ball.fac += abs(dotProduct_1 * this.rAcc_1) * SPEED ** 2.5;
       return reflect;
     }
     if (shortestDist_2 < BALL_SIZE / 2) {
       let reflect = createVector(initialVelocity.x - 2 * dotProduct_2 * normal_2.x, initialVelocity.y - 2 * dotProduct_2 * normal_2.y);
       this.glow_2 = 255;
-      ball.fac += abs(dotProduct_2 * this.rAcc_2) * SPEED ** 2;
+      ball.fac += abs(dotProduct_2 * this.rAcc_2) * SPEED ** 2.5;
       return reflect;
     }
     return ball.vel;
@@ -239,30 +240,38 @@ class Background {
     push();
     translate(-width / 2, 0);
     box(0, h, h / 2);
+    stroke(255, this.leftGlow - 80);
+    box(0, h + (80 - this.leftGlow), h / 2 + (80 - this.leftGlow));
     pop();
     // right goal
     push();
     translate(width / 2, 0);
     box(0, h, h / 2);
+    stroke(255, this.rightGlow - 80);
+    box(0, h + (80 - this.rightGlow), h / 2 + (80 - this.rightGlow));
     pop();
     // boundary
-    push();
     noFill();
+    push();
     translate(0, 0, h / 4);
+    box(width, height, 0);
+    pop();
+    push();
+    translate(0, 0, -h / 4);
     box(width, height, 0);
     pop();
     // score
     push();
     fill(80, 80, this.rightGlow, this.rightGlow);
     textFont(font);
-    textSize(100 + this.rightGlow / 2);
+    textSize(80 + this.rightGlow / 3);
     textAlign(CENTER, CENTER);
     text(this.leftGoals, -width / 10, 0);
     pop();
     push();
     fill(this.leftGlow, 80, 80, this.leftGlow);
     textFont(font);
-    textSize(100 + this.leftGlow / 2);
+    textSize(80 + this.leftGlow / 3);
     textAlign(CENTER, CENTER);
     text(this.rightGoals, width / 10, 0);
     pop();
@@ -303,7 +312,7 @@ function setup() {
 
 function draw() {
   background(10);
-  pointLight(255, 255, 255, 0, 0, height / 2);
+  pointLight(255, 255, 255, 0, 0, height / 3);
   // orbitControl();
   camera(0, 0, 850, ball.pos.x * 0.2, ball.pos.y * 0.2, 0);
   B1.show();
