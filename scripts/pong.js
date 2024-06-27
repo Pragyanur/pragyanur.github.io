@@ -80,18 +80,16 @@ class Players {
   show() {
     // player 1
     push();
-    ambientLight(80);
-    specularMaterial(250);
+    ambientLight(100);
     stroke(255);
     translate(this.line_1, this.pos_1, 0);
     rotateZ(this.rot_1);
-    fill(255, this.glow_1);
+    fill(this.glow_1, 10, 10, this.glow_1);
     box(0, this.size, this.size);
     pop();
     // player 2
     push();
-    ambientLight(80);
-    specularMaterial(250);
+    ambientLight(100);
     stroke(255);
     translate(this.line_2, this.pos_2, 0);
     rotateZ(this.rot_2);
@@ -115,8 +113,8 @@ class Players {
   }
 
   update() {
-    if (this.glow_1 != 100) this.glow_1 *= 0.9;
-    if (this.glow_2 != 100) this.glow_2 *= 0.9;
+    if (this.glow_1 > 100) this.glow_1 -= 10; else this.glow_1 = 100;
+    if (this.glow_2 > 100) this.glow_2 -= 10; else this.glow_2 = 100;
 
     this.pos_1 = constrain(this.pos_1, -height / 2 + this.size / 2, height / 2 - this.size / 2);
     this.rAcc_1 = constrain(this.rAcc_1, -2, 2);
@@ -255,14 +253,14 @@ class Background {
     pop();
     // score
     push();
-    fill(0, 0, this.rightGlow, this.rightGlow);
+    fill(80, 80, this.rightGlow, this.rightGlow);
     textFont(font);
     textSize(100 + this.rightGlow / 2);
     textAlign(CENTER, CENTER);
     text(this.leftGoals, -width / 10, 0);
     pop();
     push();
-    fill(this.leftGlow, 0, 0, this.leftGlow);
+    fill(this.leftGlow, 80, 80, this.leftGlow);
     textFont(font);
     textSize(100 + this.leftGlow / 2);
     textAlign(CENTER, CENTER);
@@ -305,7 +303,7 @@ function setup() {
 
 function draw() {
   background(10);
-  pointLight(255, 255, 255, 0, 0, 100);
+  pointLight(255, 255, 255, 0, 0, height / 2);
   // orbitControl();
   camera(0, 0, 850, ball.pos.x * 0.2, ball.pos.y * 0.2, 0);
   B1.show();
