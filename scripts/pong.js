@@ -35,6 +35,8 @@ class Ball {
     // bouncing off the walls; vertical and horizontal
     if (this.pos.x + this.vel.x * this.fac - this.radius <= x_min || this.pos.x + this.vel.x * this.fac + this.radius >= x_max) // fixed: ball moving out of the box
     { 
+              console.log('hit left or right');
+
       this.vel.x *= -1;
       if (this.pos.y > y_min + height / 10 && this.pos.y < y_max - height / 10) 
       {
