@@ -303,11 +303,11 @@ class Background {
   isGoal(ball) {
     let h = height / 8;
     if (ball.pos.y < height / 2 - h && ball.pos.y > -height / 2 + h) {
-      if (ball.pos.x <= - width / 2 + BALL_SIZE / 2) {
+      if (ball.pos.x <= x_min + BALL_SIZE) {
         this.leftGlow = 255;
         this.rightGoals++;
       }
-      if (ball.pos.x >= width / 2 - BALL_SIZE / 2) {
+      if (ball.pos.x >= x_max- BALL_SIZE) {
         this.rightGlow = 255;
         this.leftGoals++;
       }
