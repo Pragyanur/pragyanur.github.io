@@ -28,12 +28,20 @@ class Ball {
     this.fac = SPEED;                                       // speed as a factor (vel * fac)
     this.radius = BALL_SIZE / 2;
   }
-  update() {
+  update(bg) {
     this.vel.normalize();                                   // unit velocity
     // debugged ball getting stuck vertically
     if (this.vel.x == 0) this.vel.x += randomGaussian(-0.1,0.1);
     // bouncing off the walls; vertical and horizontal
-    if (this.pos.x + this.vel.x * this.fac - this.radius <= x_min || this.pos.x + this.vel.x * this.fac + this.radius >= x_max) this.vel.x *= -1; // fixed: ball moving out of the box
+    if (this.pos.x + this.vel.x * this.fac - this.radius <= x_min || this.pos.x + this.vel.x * this.fac + this.radius >= x_max) // fixed: ball moving out of the box
+    { 
+      this.vel.x *= -1;
+      if (this.pos.y > y_min + height / 10 && this.pos.y < y_max - height / 10) 
+      {
+        if (this.pos.x < 0) {bg.rightGoals++;bg.leftGlow = 255;}
+        if (this.pos.y > 0) {bg.leftGoals++;bg.rightGlow =255;}
+      }
+    }
     else this.pos.x += this.vel.x * this.fac;    // update position by incrementing with direction and speed
     if (this.pos.y + this.vel.y * this.fac - this.radius <= y_min || this.pos.y + this.vel.y * this.fac + this.radius >= y_max) this.vel.y *= -1;
     else this.pos.y += this.vel.y * this.fac;
@@ -50,14 +58,7 @@ class Ball {
       this.vel = players.hit(this);
     }
   }
-  goal(rol) {
-    if(rol === 'left') {
-      if(this.pos.x - this.radius < x_min) return true;
-    }
-    if (rol === 'right') {
-      if(this.pos.x + this.radius  > x_max) return true;
-    }
-  }
+
   // display ball
   show() {
     push();
@@ -308,19 +309,17 @@ class Background {
     else this.rightGlow = 80;
 
   }
-  isGoal(ball) {
-    let h = height / 8;
-    if (ball.pos.y < height / 2 - h && ball.pos.y > -height / 2 + h) {
-      if (ball.goal('left')) {
-        this.leftGlow = 255;
-        this.rightGoals++;
-      }
-      if (ball.goal('right')) {
-        this.rightGlow = 255;
-        this.leftGoals++;
-      }
-    }
-  }
+  // isGoal(ball) {
+  //   let h = height / 8;
+  //   if (ball.pos.y < height / 2 - h && ball.pos.y > -height / 2 + h) {
+  //     if () {
+  //       this.leftGlow = 255;
+  //     }
+  //     if (ball.goal('right')) {
+  //       this.rightGlow = 255;
+  //     }
+  //   }
+  // }
 }
 // main setup
 function setup() {
