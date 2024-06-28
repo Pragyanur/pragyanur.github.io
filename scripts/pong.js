@@ -40,6 +40,7 @@ class Ball {
       {
         if (this.pos.x < 0) {bg.rightGoals++;bg.leftGlow = 255;}
         if (this.pos.x > 0) {bg.leftGoals++;bg.rightGlow =255;}
+        console.log('hit');
       }
     }
     else this.pos.x += this.vel.x * this.fac;    // update position by incrementing with direction and speed
