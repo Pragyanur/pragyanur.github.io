@@ -33,15 +33,18 @@ class Ball {
     // debugged ball getting stuck vertically
     if (this.vel.x == 0) this.vel.x += randomGaussian(-0.1,0.1);
     // bouncing off the walls; vertical and horizontal
-    if (this.pos.x + this.vel.x * this.fac - this.radius <= x_min || this.pos.x + this.vel.x * this.fac + this.radius >= x_max) // fixed: ball moving out of the box
-    { 
-              console.log('hit left or right');
-
+    if (this.pos.x + this.vel.x * this.fac - this.radius <= x_min || this.pos.x + this.vel.x * this.fac + this.radius >= x_max){ // fixed: ball moving out of the box 
+      console.log('hit left or right');
       this.vel.x *= -1;
-      if (this.pos.y > y_min + height / 10 && this.pos.y < y_max - height / 10) 
-      {
-        if (this.pos.x < 0) {bg.rightGoals++;bg.leftGlow = 255;}
-        if (this.pos.x > 0) {bg.leftGoals++;bg.rightGlow =255;}
+      if (this.pos.y > y_min + height / 10 && this.pos.y < y_max - height / 10) {
+        if (this.pos.x < 0) {
+          bg.rightGoals++;
+          bg.leftGlow = 255;
+        }
+        if (this.pos.x > 0) {
+          bg.leftGoals++;
+          bg.rightGlow = 255;
+        }
         console.log('hit');
       }
     }
