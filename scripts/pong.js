@@ -39,7 +39,7 @@ class Ball {
       if (this.pos.y > y_min + height / 10 && this.pos.y < y_max - height / 10) 
       {
         if (this.pos.x < 0) {bg.rightGoals++;bg.leftGlow = 255;}
-        if (this.pos.y > 0) {bg.leftGoals++;bg.rightGlow =255;}
+        if (this.pos.x > 0) {bg.leftGoals++;bg.rightGlow =255;}
       }
     }
     else this.pos.x += this.vel.x * this.fac;    // update position by incrementing with direction and speed
