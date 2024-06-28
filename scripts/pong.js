@@ -1,11 +1,12 @@
 const BALL_SIZE = 20;
-const SPEED = 10;
+const SPEED = 15;
 let Player1;
 let B1;
 let ball;
 let pfSize = 500;       // default box size
 let keys = {};          // for keyboard "key" press "value" true/false
 let font;               // load font from store
+let x_min, x_max, y_min, y_max;
 
 // dot product of two vectors in dimension = 2
 function dotProd(V1, V2) {
@@ -21,34 +22,31 @@ function keyReleased() {
 }
 // ball class for ball functionalities (can be optimized with Players class into one class 'game')
 class Ball {
-  constructor(x = width / 2, y = height / 2) {
-    this.pos = createVector(x, y);              // position in 2d plane parallel to screen z = 0
-    this.vel = createVector(random(-2, 2), 0);  // velocity in 2d
-    this.vel.normalize();                       // unit velocity
-    this.fac = SPEED;                           // speed as a factor (vel * fac)
+  constructor(x = 0, y = 0) {
+    this.pos = createVector(x, y);                          // position in 2d plane parallel to screen z = 0
+    this.vel = createVector(random(-2, 2), 0);              // velocity in 2d
+    this.fac = SPEED;                                       // speed as a factor (vel * fac)
+    this.radius = BALL_SIZE / 2;
   }
   update() {
-    this.vel.normalize();
-    this.pos.x += this.vel.x * this.fac;        // update position by incrementing with direction and speed
-    this.pos.y += this.vel.y * this.fac;
+    this.vel.normalize();                                   // unit velocity
+    // debugged ball getting stuck vertically
+    if (this.vel.x == 0) this.vel.x += randomGaussian(-0.1,0.1);
     // bouncing off the walls; vertical and horizontal
-    if (this.pos.x < -width / 2 + BALL_SIZE / 2 || this.pos.x > width / 2 - BALL_SIZE / 2) this.vel.x = -this.vel.x;
-    if (this.pos.y < -height / 2 + BALL_SIZE / 2 || this.pos.y > height / 2 - BALL_SIZE / 2) this.vel.y = -this.vel.y;
+    if (this.pos.x + this.vel.x * this.fac - this.radius <= x_min || this.pos.x + this.vel.x * this.fac + this.radius >= x_max) this.vel.x *= -1; // fixed: ball moving out of the box
+    else this.pos.x += this.vel.x * this.fac;    // update position by incrementing with direction and speed
+    if (this.pos.y + this.vel.y * this.fac - this.radius <= y_min || this.pos.y + this.vel.y * this.fac + this.radius >= y_max) this.vel.y *= -1;
+    else this.pos.y += this.vel.y * this.fac;
     // reset factor gradually
-    if (this.fac != SPEED) this.fac += this.fac > SPEED ? -0.5 : 0.5;
-    // debugging: ball moving out of the box
-    if (this.pos.x < -width / 2) this.pos.x += 5;
-    if (this.pos.x > width / 2) this.pos.x -= 5;
-    if (this.pos.y < -height / 2) this.pos.y += 5;
-    if (this.pos.y > height / 2) this.pos.y -= 5;
+    if (this.fac != SPEED) this.fac += this.fac > SPEED ? -1 : 1;
   }
   // bouncing the ball off the player boards or reflection
   reflect(players) {
     // only true when ball is near the boards
-    if (dist(players.line_1, players.pos_1, this.pos.x, this.pos.y) < players.size - BALL_SIZE / 2) {
+    if (dist(players.line_1, players.pos_1, this.pos.x, this.pos.y) < players.size - this.radius) {
       this.vel = players.hit(this);
     }
-    if (dist(players.line_2, players.pos_2, this.pos.x, this.pos.y) < players.size - BALL_SIZE / 2) {
+    if (dist(players.line_2, players.pos_2, this.pos.x, this.pos.y) < players.size - this.radius) {
       this.vel = players.hit(this);
     }
   }
@@ -59,7 +57,7 @@ class Ball {
     ambientLight(150);
     specularMaterial(250);
     noStroke();
-    fill(200);
+    fill(255);
     sphere(BALL_SIZE);
     pop();
   }
@@ -319,6 +317,11 @@ class Background {
 // main setup
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
+  x_max = width / 2;
+  x_min = -x_max;
+  y_max = height / 2;
+  y_min = -y_max;
+
   pfSize = 4 * width / 5;
   B1 = new Background(pfSize);
   Player1 = new Players();
