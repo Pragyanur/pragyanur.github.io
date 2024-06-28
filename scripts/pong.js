@@ -52,10 +52,10 @@ class Ball {
   }
   goal(rol) {
     if(rol === 'left') {
-      if(this.pos.x - this.radius  - 5<= x_min) return true;
+      if(this.pos.x - this.radius < x_min) return true;
     }
     if (rol === 'right') {
-      if(this.pos.x + this.radius +5 >= x_max) return true;
+      if(this.pos.x + this.radius  > x_max) return true;
     }
   }
   // display ball
