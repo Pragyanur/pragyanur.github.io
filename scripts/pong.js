@@ -3,10 +3,10 @@ const SPEED = 15;
 let Player1;
 let B1;
 let ball;
-let pfSize = 500;       // default box size
-let keys = {};          // for keyboard "key" press "value" true/false
-let font;               // load font from store
-let x_min, x_max, y_min, y_max;
+let pfSize = 500;               // default box size
+let keys = {};                  // for keyboard "key" press "value" true/false
+let font;                       // load font from store
+let x_min, x_max, y_min, y_max; // bounding box
 
 // dot product of two vectors in dimension = 2
 function dotProd(V1, V2) {
@@ -20,6 +20,10 @@ function keyPressed() {
 function keyReleased() {
   keys[keyCode] = false;
 }
+// distance between two points
+function vectorDist(u,v) {
+  return dist(u.x,u.y,v.x,v.y)
+}
 // ball class for ball functionalities (can be optimized with Players class into one class 'game')
 class Ball {
   constructor(x = 0, y = 0) {
@@ -31,7 +35,7 @@ class Ball {
   update() {
     this.vel.normalize();                                   // unit velocity
     // debugged ball getting stuck vertically
-    if (this.vel.x == 0) this.vel.x += randomGaussian(-0.1,0.1);
+    if (this.vel.x == 0) this.vel.x += randomGaussian(-0.1, 0.1);
     // bouncing off the walls; vertical and horizontal
     if (this.pos.x + this.vel.x * this.fac - this.radius <= x_min || this.pos.x + this.vel.x * this.fac + this.radius >= x_max) this.vel.x *= -1; // fixed: ball moving out of the box
     else this.pos.x += this.vel.x * this.fac;    // update position by incrementing with direction and speed
@@ -43,10 +47,10 @@ class Ball {
   // bouncing the ball off the player boards or reflection
   reflect(players) {
     // only true when ball is near the boards
-    if (dist(players.line_1, players.pos_1, this.pos.x, this.pos.y) < players.size - this.radius) {
+    if (dist(players.line_1, players.pos_1, this.pos.x, this.pos.y) < players.size / 2 + BALL_SIZE) {
       this.vel = players.hit(this);
     }
-    if (dist(players.line_2, players.pos_2, this.pos.x, this.pos.y) < players.size - this.radius) {
+    if (dist(players.line_2, players.pos_2, this.pos.x, this.pos.y) < players.size / 2 + BALL_SIZE) {
       this.vel = players.hit(this);
     }
   }
@@ -55,7 +59,7 @@ class Ball {
     push();
     translate(this.pos.x, this.pos.y);
     ambientLight(150);
-    specularMaterial(250);
+    specularMaterial(200);
     noStroke();
     fill(255);
     sphere(BALL_SIZE);
@@ -70,42 +74,43 @@ class Players {
     this.rot_2 = 0;                         // rotated angle player 2
     this.pos_1 = 0;                         // y coordinate of player 1
     this.pos_2 = 0;                         // y coordinate of player 2
-    this.line_1 = width / 2 - this.size;    // x coordinate of player 1
-    this.line_2 = -width / 2 + this.size;   // x coordinate of player 2
+    this.pp_1 = this.pos_1;                 // previous y of player 1
+    this.pp_2 = this.pos_2                  // previous y of player 2
+    this.line_1 = x_max - this.size;        // x coordinate of player 1
+    this.line_2 = x_min + this.size;        // x coordinate of player 2
     this.rAcc_1 = 0;                        // rotation acceleration player 1
     this.rAcc_2 = 0;                        // rotation acceleration player 2
     // for dynamic visuals
-    this.glow_1 = 80;
-    this.glow_2 = 80;
+    this.glow_1 = 50;
+    this.glow_2 = 50;
   }
   // display player 1 and 2
   show() {
-    // player 1
     push();
-    ambientLight(15);
-    stroke(255);
-    strokeWeight(2);
-    translate(this.line_1, this.pos_1, 0);
-    rotateZ(this.rot_1);
-    fill(this.glow_1, 0, 0);
-    box(this.size / 10, this.size, this.size);
-    pop();
-    // player 2
-    push();
-    ambientLight(15);
-    stroke(255);
-    strokeWeight(2);
-    translate(this.line_2, this.pos_2, 0);
-    rotateZ(this.rot_2);
-    fill(0, 0, this.glow_2);
-    box(this.size / 10, this.size, this.size);
-    pop();
+    {
+      ambientLight(15);
+      stroke(255);
+      strokeWeight(2);
+      // player 1
+      push();
+      translate(this.line_1, this.pos_1, 0);
+      rotateZ(this.rot_1);
+      fill(this.glow_1, 0, 0);
+      box(this.size / 10, this.size, this.size);
+      pop();
+      // player 2
+      push();
+      translate(this.line_2, this.pos_2, 0);
+      rotateZ(this.rot_2);
+      fill(0, 0, this.glow_2);
+      box(this.size / 10, this.size, this.size);
+      pop();
+    } pop();
   }
   // player controls
   handleKeys() {
-    const rotationSpeed = 0.01;
-    const positionSpeed = 12;
-
+    const rotationSpeed = SPEED / 1500;
+    const positionSpeed = SPEED / 1.5;
     // change y coordinate by incrementing with position speed
     // change rotation acceleration of board by incrementing with rotation speed
     // LATER THIS ACCELERATION IS USED TO UPDATE ROTATION ANGLE
@@ -122,18 +127,21 @@ class Players {
   // update player position and rotation
   update() {
     // reset glow
-    this.glow_1 = this.glow_1 > 80 ? (this.glow_1 - 10) : 80;
-    this.glow_2 = this.glow_2 > 80 ? (this.glow_2 - 10) : 80;
+    this.glow_1 = this.glow_1 > 50 ? (this.glow_1 - 10) : 50;
+    this.glow_2 = this.glow_2 > 50 ? (this.glow_2 - 10) : 50;
+    // update previous positions
+    this.pp_1 = this.pos_1;
+    this.pp_2 = this.pos_2;
     // constrain position between the height of the box
     // constrain rotation acceleration
     // update rotated angle
     // angle = remainder of (angle / pi)
-    this.pos_1 = constrain(this.pos_1, -height / 2 + this.size / 2, height / 2 - this.size / 2);
-    this.rAcc_1 = constrain(this.rAcc_1, -2, 2);
+    this.pos_1 = constrain(this.pos_1, y_min + this.size, y_max - this.size);
+    this.rAcc_1 = constrain(this.rAcc_1, -1, 1);
     this.rot_1 += this.rAcc_1;
     this.rot_1 = this.rot_1 % PI;
     // for player 2
-    this.pos_2 = constrain(this.pos_2, -height / 2 + this.size / 2, height / 2 - this.size / 2);
+    this.pos_2 = constrain(this.pos_2, y_min + this.size, y_max - this.size);
     this.rAcc_2 = constrain(this.rAcc_2, -1, 1);
     this.rot_2 += this.rAcc_2;
     this.rot_2 = this.rot_2 % PI;
@@ -145,31 +153,35 @@ class Players {
   hit(ball) {
     // point A is top of board and point B is bottom of board
     // A2 and B2 respectively for player 2
-    let A = createVector(this.line_1 - (this.size / 2) * sin(-this.rot_1), this.pos_1 - (this.size / 2) * cos(-this.rot_1));
-    let B = createVector(this.line_1 + (this.size / 2) * sin(-this.rot_1), this.pos_1 + (this.size / 2) * cos(-this.rot_1));
-    let A2 = createVector(this.line_2 - (this.size / 2) * sin(-this.rot_2), this.pos_2 - (this.size / 2) * cos(-this.rot_2));
-    let B2 = createVector(this.line_2 + (this.size / 2) * sin(-this.rot_2), this.pos_2 + (this.size / 2) * cos(-this.rot_2));
+    let A = createVector(this.line_1 - (this.size / 2) * sin(-this.rot_1 - this.rAcc_1), this.pos_1 - (this.size / 2) * cos(-this.rot_1 - this.rAcc_1));
+    let B = createVector(this.line_1 + (this.size / 2) * sin(-this.rot_1 - this.rAcc_1), this.pos_1 + (this.size / 2) * cos(-this.rot_1 - this.rAcc_1));
+    let A2 = createVector(this.line_2 - (this.size / 2) * sin(-this.rot_2 - this.rAcc_2), this.pos_2 - (this.size / 2) * cos(-this.rot_2 - this.rAcc_2));
+    let B2 = createVector(this.line_2 + (this.size / 2) * sin(-this.rot_2 - this.rAcc_2), this.pos_2 + (this.size / 2) * cos(-this.rot_2 - this.rAcc_2));
     // normal vectors of the player boards (perpendicular to the surface)
-    let normal_1 = createVector(-this.size * cos(this.rot_1) / 2, -this.size * sin(this.rot_1) / 2);
-    let normal_2 = createVector(-this.size * cos(this.rot_2) / 2, -this.size * sin(this.rot_2) / 2);
-    // unit normal vectors
-    normal_1.normalize();
-    normal_2.normalize();
-    // ball's initial velocity; normalized
+    let normal_1 = createVector(-cos(this.rot_1), -sin(this.rot_1));
+    let normal_2 = createVector(-cos(this.rot_2), -sin(this.rot_2));
+    // ball's initial velocity normalized
     let initialVelocity = createVector(ball.vel.x, ball.vel.y);
-    initialVelocity.normalize();
+    // future position of ball
+    let ballFuturePosition = createVector(ball.pos.x + initialVelocity.x * ball.fac, ball.pos.y + initialVelocity.y * ball.fac)
     // calculating shortest distance between ball position and the boards (player 1 and player 2)
-    let shortestDist_1 = abs((A.y - B.y) * ball.pos.x - (A.x - B.x) * ball.pos.y + (A.x * B.y - A.y * B.x)) / sqrt((A.y - B.y) ** 2 + (A.x - B.x) ** 2);
-    let shortestDist_2 = abs((A2.y - B2.y) * ball.pos.x - (A2.x - B2.x) * ball.pos.y + (A2.x * B2.y - A2.y * B2.x)) / sqrt((A2.y - B2.y) ** 2 + (A2.x - B2.x) ** 2);
+    let shortestDist_1 = abs((A.y - B.y) * ballFuturePosition.x - (A.x - B.x) * ballFuturePosition.y + (A.x * B.y - A.y * B.x)) / sqrt((A.y - B.y) ** 2 + (A.x - B.x) ** 2);
+    let shortestDist_2 = abs((A2.y - B2.y) * ballFuturePosition.x - (A2.x - B2.x) * ballFuturePosition.y + (A2.x * B2.y - A2.y * B2.x)) / sqrt((A2.y - B2.y) ** 2 + (A2.x - B2.x) ** 2);
     // dot product of ball's velocity with the normal vector of the boards (player 1 and player 2)
     let dotProduct_1 = dotProd(initialVelocity, normal_1);
+    console.log(dotProduct_1);
     let dotProduct_2 = dotProd(initialVelocity, normal_2);
     // board normals for debugging
-    // line(this.line_1, this.pos_1, this.line_1 + normal_1.x, this.pos_1 + normal_1.y);
-    // line(this.line_2, this.pos_2, this.line_2 - normal_2.x, this.pos_2 - normal_2.y);
+    // line(this.line_1, this.pos_1, this.line_1 + normal_1.x * 50, this.pos_1 + normal_1.y * 50);
+    // line(this.line_2, this.pos_2, this.line_2 - normal_2.x * 50, this.pos_2 - normal_2.y * 50);
+
+    if (vectorDist(ballFuturePosition, A) <= ball.radius || vectorDist(ballFuturePosition, B) <= ball.radius || vectorDist(ballFuturePosition, A2) <= ball.radius || vectorDist(ballFuturePosition, B2) <= ball.radius) {
+      if (abs(dotProduct_1) <= 0.2 || abs(dotProduct_2) <= 0.2) 
+        return createVector(-initialVelocity.x, -initialVelocity.y);
+    }
 
     // if shortest distance between board and ball is less than half of ball's diameter
-    if (shortestDist_1 < BALL_SIZE / 2) {
+    if (shortestDist_1 <= ball.radius) {
       this.glow_1 = 255;
       // calculate reflected velocity vector using: r=d−2(d⋅n)n
       let reflect = createVector(initialVelocity.x - 2 * dotProduct_1 * normal_1.x, initialVelocity.y - 2 * dotProduct_1 * normal_1.y);
@@ -178,7 +190,7 @@ class Players {
       return reflect;
     }
     // for player 2
-    if (shortestDist_2 < BALL_SIZE / 2) {
+    if (shortestDist_2 <= ball.radius) {
       this.glow_2 = 255;
       let reflect = createVector(initialVelocity.x - 2 * dotProduct_2 * normal_2.x, initialVelocity.y - 2 * dotProduct_2 * normal_2.y);
       ball.fac += abs(dotProduct_2 * this.rAcc_2) * SPEED ** 2.5;
