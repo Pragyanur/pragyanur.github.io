@@ -1,5 +1,8 @@
 const BALL_SIZE = 20;
 const SPEED = 15;
+const BOARD_GLOW = 80;
+const SCORE_GLOW = 80;
+const BACKGROUND_COLOR = [0, 70, 50];
 let Player1;
 let B1;
 let ball;
@@ -7,6 +10,7 @@ let pfSize = 500;               // default box size
 let keys = {};                  // for keyboard "key" press "value" true/false
 let font;                       // load font from store
 let x_min, x_max, y_min, y_max; // bounding box
+
 
 // dot product of two vectors in dimension = 2
 function dotProd(V1, V2) {
@@ -21,8 +25,8 @@ function keyReleased() {
   keys[keyCode] = false;
 }
 // distance between two points
-function vectorDist(u,v) {
-  return dist(u.x,u.y,v.x,v.y)
+function vectorDist(u, v) {
+  return dist(u.x, u.y, v.x, v.y)
 }
 // ball class for ball functionalities (can be optimized with Players class into one class 'game')
 class Ball {
@@ -35,11 +39,11 @@ class Ball {
   update(bg) {
     this.vel.normalize();                                   // unit velocity
     // debugged ball getting stuck vertically
-    if (this.vel.x == 0) this.vel.x += randomGaussian(-0.1, 0.1);
+    if (this.vel.x == 0) this.vel.x += random(-0.1, 0.1);
     // bouncing off the walls; vertical and horizontal
-    if (this.pos.x + this.vel.x * this.fac - this.radius <= x_min || this.pos.x + this.vel.x * this.fac + this.radius >= x_max){ // fixed: ball moving out of the box 
-      console.log('hit left or right');
+    if (this.pos.x + this.vel.x * this.fac - this.radius <= x_min || this.pos.x + this.vel.x * this.fac + this.radius >= x_max) { // fixed: ball moving out of the box 
       this.vel.x *= -1;
+      // goals update when hitting from goal posts
       if (this.pos.y > y_min + height / 10 && this.pos.y < y_max - height / 10) {
         if (this.pos.x < 0) {
           bg.rightGoals++;
@@ -49,7 +53,6 @@ class Ball {
           bg.leftGoals++;
           bg.rightGlow = 255;
         }
-        console.log('hit');
       }
     }
     else this.pos.x += this.vel.x * this.fac;    // update position by incrementing with direction and speed
@@ -68,7 +71,6 @@ class Ball {
       this.vel = players.hit(this);
     }
   }
-
   // display ball
   show() {
     push();
@@ -96,8 +98,8 @@ class Players {
     this.rAcc_1 = 0;                        // rotation acceleration player 1
     this.rAcc_2 = 0;                        // rotation acceleration player 2
     // for dynamic visuals
-    this.glow_1 = 50;
-    this.glow_2 = 50;
+    this.glow_1 = BOARD_GLOW;
+    this.glow_2 = BOARD_GLOW;
   }
   // display player 1 and 2
   show() {
@@ -139,11 +141,15 @@ class Players {
     if (keys[65]) this.rAcc_2 -= rotationSpeed;
     if (keys[68]) this.rAcc_2 += rotationSpeed;
   }
+  // other controls
+  handleGame(ball, bg) {
+
+  }
   // update player position and rotation
   update() {
     // reset glow
-    this.glow_1 = this.glow_1 > 50 ? (this.glow_1 - 10) : 50;
-    this.glow_2 = this.glow_2 > 50 ? (this.glow_2 - 10) : 50;
+    this.glow_1 = this.glow_1 > BOARD_GLOW ? (this.glow_1 - 10) : BOARD_GLOW;
+    this.glow_2 = this.glow_2 > BOARD_GLOW ? (this.glow_2 - 10) : BOARD_GLOW;
     // update previous positions
     this.pp_1 = this.pos_1;
     this.pp_2 = this.pos_2;
@@ -177,50 +183,46 @@ class Players {
     let normal_2 = createVector(-cos(this.rot_2), -sin(this.rot_2));
     // ball's initial velocity normalized
     let initialVelocity = createVector(ball.vel.x, ball.vel.y);
+    // dot product of ball's velocity with the normal vector of the boards (player 1 and player 2)
+    let dotProduct_1 = dotProd(initialVelocity, normal_1);
+    let dotProduct_2 = dotProd(initialVelocity, normal_2);
     // future position of ball
     let ballFuturePosition = createVector(ball.pos.x + initialVelocity.x * ball.fac, ball.pos.y + initialVelocity.y * ball.fac)
+    // fixed: ball stuck in board
+    if (vectorDist(ballFuturePosition, A) <= ball.radius || vectorDist(ballFuturePosition, B) <= ball.radius || vectorDist(ballFuturePosition, A2) <= ball.radius || vectorDist(ballFuturePosition, B2) <= ball.radius) {
+      if (abs(dotProduct_1) <= 0.2 || abs(dotProduct_2) <= 0.2)
+        return createVector(-initialVelocity.x, -initialVelocity.y);
+    }
     // calculating shortest distance between ball position and the boards (player 1 and player 2)
     let shortestDist_1 = abs((A.y - B.y) * ballFuturePosition.x - (A.x - B.x) * ballFuturePosition.y + (A.x * B.y - A.y * B.x)) / sqrt((A.y - B.y) ** 2 + (A.x - B.x) ** 2);
     let shortestDist_2 = abs((A2.y - B2.y) * ballFuturePosition.x - (A2.x - B2.x) * ballFuturePosition.y + (A2.x * B2.y - A2.y * B2.x)) / sqrt((A2.y - B2.y) ** 2 + (A2.x - B2.x) ** 2);
-    // dot product of ball's velocity with the normal vector of the boards (player 1 and player 2)
-    let dotProduct_1 = dotProd(initialVelocity, normal_1);
-    console.log(dotProduct_1);
-    let dotProduct_2 = dotProd(initialVelocity, normal_2);
+
     // board normals for debugging
     // line(this.line_1, this.pos_1, this.line_1 + normal_1.x * 50, this.pos_1 + normal_1.y * 50);
     // line(this.line_2, this.pos_2, this.line_2 - normal_2.x * 50, this.pos_2 - normal_2.y * 50);
 
-    if (vectorDist(ballFuturePosition, A) <= ball.radius || vectorDist(ballFuturePosition, B) <= ball.radius || vectorDist(ballFuturePosition, A2) <= ball.radius || vectorDist(ballFuturePosition, B2) <= ball.radius) {
-      if (abs(dotProduct_1) <= 0.2 || abs(dotProduct_2) <= 0.2) 
-        return createVector(-initialVelocity.x, -initialVelocity.y);
-    }
-
-    // if shortest distance between board and ball is less than half of ball's diameter
+    // if shortest distance between board and ball is less than radius
     if (shortestDist_1 <= ball.radius) {
       this.glow_1 = 255;
-      // calculate reflected velocity vector using: r=d−2(d⋅n)n
-      let reflect = createVector(initialVelocity.x - 2 * dotProduct_1 * normal_1.x, initialVelocity.y - 2 * dotProduct_1 * normal_1.y);
       // ball_speed_increase is proportional to rotation acceleration and dot product of velocity with board normal
-      ball.fac += abs(dotProduct_1 * this.rAcc_1) * SPEED ** 2.5;
-      return reflect;
+      ball.fac += abs(dotProduct_1 * this.rAcc_1 + (this.pos_1 - this.pp_1)) * SPEED ** 2.5;
+      // calculate reflected velocity vector using: r=d−2(d⋅n)n
+      return createVector(initialVelocity.x - 2 * dotProduct_1 * normal_1.x, initialVelocity.y - 2 * dotProduct_1 * normal_1.y);;
     }
     // for player 2
     if (shortestDist_2 <= ball.radius) {
       this.glow_2 = 255;
-      let reflect = createVector(initialVelocity.x - 2 * dotProduct_2 * normal_2.x, initialVelocity.y - 2 * dotProduct_2 * normal_2.y);
-      ball.fac += abs(dotProduct_2 * this.rAcc_2) * SPEED ** 2.5;
-      return reflect;
+      ball.fac += abs(dotProduct_2 * this.rAcc_2 + (this.pos_2 - this.pp_2)) * SPEED ** 2.5;
+      return createVector(initialVelocity.x - 2 * dotProduct_2 * normal_2.x, initialVelocity.y - 2 * dotProduct_2 * normal_2.y);;
     }
     return ball.vel;    // return initial velocity if not hit
   }
 }
 // the bounding box
 class Background {
-  constructor(/*platform*/) {
-    // this.platformSize = platform;
-    this.leftGlow = 80;
-    this.rightGlow = 80;
-    this.goalPost = 0;
+  constructor() {
+    this.leftGlow = SCORE_GLOW;
+    this.rightGlow = SCORE_GLOW;
     this.leftGoals = 0;
     this.rightGoals = 0;
   }
@@ -228,70 +230,63 @@ class Background {
     let h = 4 * height / 5;
     // behind
     push();
-    fill(0, 70, 50);
     noStroke();
+    fill(...BACKGROUND_COLOR);
     translate(0, 0, -h / 4);
-    plane(width, height);
+    plane(width - 5, height - 5);
     pop();
     // down
     push();
-    fill(0, 70, 50);
-    noStroke();
-    translate(0, height / 2);
+    fill(...BACKGROUND_COLOR);
+    translate(0, y_max);
     rotateX(PI / 2);
-    plane(width, h / 2);
+    box(width, h / 2, 1);
     pop();
     // up
     push();
-    fill(0, 70, 50);
-    noStroke();
-    translate(0, -height / 2);
+    fill(...BACKGROUND_COLOR);
+    translate(0, y_min);
     rotateX(-PI / 2);
-    plane(width, h / 2);
+    box(width, h / 2, 1);
     pop();
     // left
     fill(this.leftGlow, 0, 0);
-    noStroke();
     push();
-    translate(-width / 2, -height / 2 + height / 20);
+    translate(x_min, y_min + height / 20);
     rotateY(PI / 2);
-    plane(h / 2, height / 10);
+    box(h / 2, height / 10, 1);
     pop();
     push();
-    translate(-width / 2, height / 2 - height / 20);
+    translate(x_min, y_max - height / 20);
     rotateY(PI / 2);
-    plane(h / 2, height / 10);
+    box(h / 2, height / 10, 1);
     pop();
     //right
     fill(0, 0, this.rightGlow);
-    noStroke();
     push();
-    translate(width / 2, -height / 2 + height / 20);
+    translate(x_max, y_min + height / 20);
     rotateY(-PI / 2);
-    plane(h / 2, height / 10);
+    box(h / 2, height / 10, 1);
     pop();
     push();
-    translate(width / 2, height / 2 - height / 20);
+    translate(x_max, y_max - height / 20);
     rotateY(-PI / 2);
-    plane(h / 2, height / 10);
+    box(h / 2, height / 10, 1);
     pop();
-    // goals
     // left goal
     stroke(255);
     strokeWeight(5);
     noFill();
     push();
-    translate(-width / 2, 0);
+    translate(x_min, 0);
     box(0, h, h / 2);
-    stroke(255, this.leftGlow - 80);
-    box(0, h + (80 - this.leftGlow), h / 2 + (80 - this.leftGlow));
+    box(0, h + (SCORE_GLOW - this.leftGlow), h / 2 + (SCORE_GLOW - this.leftGlow));
     pop();
     // right goal
     push();
-    translate(width / 2, 0);
+    translate(x_max, 0);
     box(0, h, h / 2);
-    stroke(255, this.rightGlow - 80);
-    box(0, h + (80 - this.rightGlow), h / 2 + (80 - this.rightGlow));
+    box(0, h + (SCORE_GLOW - this.rightGlow), h / 2 + (SCORE_GLOW - this.rightGlow));
     pop();
     // boundary
     noFill();
@@ -300,44 +295,25 @@ class Background {
     box(width, height, 0);
     pop();
     push();
-    translate(0, 0, -h / 4);
-    box(width, height, 0);
     pop();
     // score
-    push();
-    fill(80, 80, this.rightGlow, this.rightGlow);
     textFont(font);
-    textSize(80 + this.rightGlow / 3);
     textAlign(CENTER, CENTER);
+    push();
+    fill(SCORE_GLOW, SCORE_GLOW, this.rightGlow, this.rightGlow);
+    textSize(SCORE_GLOW + this.rightGlow / 3);
     text(this.leftGoals, -width / 10, 0);
     pop();
     push();
-    fill(this.leftGlow, 80, 80, this.leftGlow);
-    textFont(font);
-    textSize(80 + this.leftGlow / 3);
-    textAlign(CENTER, CENTER);
+    fill(this.leftGlow, SCORE_GLOW, SCORE_GLOW, this.leftGlow);
+    textSize(SCORE_GLOW + this.leftGlow / 3);
     text(this.rightGoals, width / 10, 0);
     pop();
   }
   reset() {
-    if (this.leftGlow > 80) this.leftGlow -= 5;
-    else this.leftGlow = 80;
-
-    if (this.rightGlow > 80) this.rightGlow -= 5;
-    else this.rightGlow = 80;
-
+    this.leftGlow = this.leftGlow > SCORE_GLOW ? this.leftGlow - 5 : SCORE_GLOW;
+    this.rightGlow = this.rightGlow > SCORE_GLOW ? this.rightGlow - 5 : SCORE_GLOW;
   }
-  // isGoal(ball) {
-  //   let h = height / 8;
-  //   if (ball.pos.y < height / 2 - h && ball.pos.y > -height / 2 + h) {
-  //     if () {
-  //       this.leftGlow = 255;
-  //     }
-  //     if (ball.goal('right')) {
-  //       this.rightGlow = 255;
-  //     }
-  //   }
-  // }
 }
 // main setup
 function setup() {
@@ -346,8 +322,8 @@ function setup() {
   x_min = -x_max;
   y_max = height / 2;
   y_min = -y_max;
-
   pfSize = 4 * width / 5;
+
   B1 = new Background(pfSize);
   Player1 = new Players();
   ball = new Ball(0, 0);
@@ -358,13 +334,13 @@ function draw() {
   background(0);
   pointLight(255, 255, 255, 0, 0, height / 3);
   // orbitControl();
-  camera(0, 0, 850, ball.pos.x * 0.2, ball.pos.y * 0.2, 0);
+  camera(0, ball.pos.y * 0.1, 1000, ball.pos.x * 0.1, ball.pos.y * 0.1, 0);
   B1.show();
+  B1.reset();
   ball.show();
   ball.update(B1);
   ball.reflect(Player1);
   Player1.show();
   Player1.handleKeys();
   Player1.update(ball);
-  B1.reset();
 }
