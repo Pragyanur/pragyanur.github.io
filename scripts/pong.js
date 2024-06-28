@@ -59,7 +59,7 @@ class Ball {
     if (this.pos.y + this.vel.y * this.fac - this.radius <= y_min || this.pos.y + this.vel.y * this.fac + this.radius >= y_max) this.vel.y *= -1;
     else this.pos.y += this.vel.y * this.fac;
     // reset factor gradually
-    if (this.fac != SPEED) this.fac += this.fac > SPEED ? -1 : 1;
+    this.fac = this.fac > SPEED ? this.fac - 2 : SPEED;
   }
   // bouncing the ball off the player boards or reflection
   reflect(players) {
@@ -178,7 +178,7 @@ class Players {
     let B = createVector(this.line_1 + (this.size / 2) * sin(-this.rot_1 - this.rAcc_1), this.pos_1 + (this.size / 2) * cos(-this.rot_1 - this.rAcc_1));
     let A2 = createVector(this.line_2 - (this.size / 2) * sin(-this.rot_2 - this.rAcc_2), this.pos_2 - (this.size / 2) * cos(-this.rot_2 - this.rAcc_2));
     let B2 = createVector(this.line_2 + (this.size / 2) * sin(-this.rot_2 - this.rAcc_2), this.pos_2 + (this.size / 2) * cos(-this.rot_2 - this.rAcc_2));
-    // normal vectors of the player boards (perpendicular to the surface)
+    // unit normal vectors of the player boards (perpendicular to the surface)
     let normal_1 = createVector(-cos(this.rot_1), -sin(this.rot_1));
     let normal_2 = createVector(-cos(this.rot_2), -sin(this.rot_2));
     // ball's initial velocity normalized
@@ -205,14 +205,14 @@ class Players {
     if (shortestDist_1 <= ball.radius) {
       this.glow_1 = 255;
       // ball_speed_increase is proportional to rotation acceleration and dot product of velocity with board normal
-      ball.fac += abs(dotProduct_1 * this.rAcc_1 + (this.pos_1 - this.pp_1)) * SPEED ** 2.5;
+      ball.fac += abs(dotProduct_1 * this.rAcc_1) * SPEED ** 2.5;
       // calculate reflected velocity vector using: r=d−2(d⋅n)n
       return createVector(initialVelocity.x - 2 * dotProduct_1 * normal_1.x, initialVelocity.y - 2 * dotProduct_1 * normal_1.y);;
     }
     // for player 2
     if (shortestDist_2 <= ball.radius) {
       this.glow_2 = 255;
-      ball.fac += abs(dotProduct_2 * this.rAcc_2 + (this.pos_2 - this.pp_2)) * SPEED ** 2.5;
+      ball.fac += abs(dotProduct_2 * this.rAcc_2) * SPEED ** 2.5;
       return createVector(initialVelocity.x - 2 * dotProduct_2 * normal_2.x, initialVelocity.y - 2 * dotProduct_2 * normal_2.y);;
     }
     return ball.vel;    // return initial velocity if not hit
@@ -333,6 +333,7 @@ function setup() {
 function draw() {
   background(0);
   pointLight(255, 255, 255, 0, 0, height / 3);
+  pointLight(100, 100, 100, 0, 0, height / 2);
   // orbitControl();
   camera(0, ball.pos.y * 0.1, 1000, ball.pos.x * 0.1, ball.pos.y * 0.1, 0);
   B1.show();
