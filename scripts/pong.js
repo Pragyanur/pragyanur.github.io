@@ -50,6 +50,14 @@ class Ball {
       this.vel = players.hit(this);
     }
   }
+  goal(rol) {
+    if(rol === 'left') {
+      if(this.pos.x - this.radius  - 5<= x_min) return true;
+    }
+    if (rol === 'right') {
+      if(this.pos.x + this.radius +5 >= x_max) return true;
+    }
+  }
   // display ball
   show() {
     push();
@@ -303,11 +311,11 @@ class Background {
   isGoal(ball) {
     let h = height / 8;
     if (ball.pos.y < height / 2 - h && ball.pos.y > -height / 2 + h) {
-      if (ball.pos.x <= x_min + BALL_SIZE) {
+      if (ball.goal('left')) {
         this.leftGlow = 255;
         this.rightGoals++;
       }
-      if (ball.pos.x >= x_max- BALL_SIZE) {
+      if (ball.goal('right')) {
         this.rightGlow = 255;
         this.leftGoals++;
       }
