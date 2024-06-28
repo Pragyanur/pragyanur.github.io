@@ -343,11 +343,10 @@ function draw() {
   camera(0, 0, 850, ball.pos.x * 0.2, ball.pos.y * 0.2, 0);
   B1.show();
   ball.show();
-  ball.update();
+  ball.update(B1);
   ball.reflect(Player1);
   Player1.show();
   Player1.handleKeys();
   Player1.update(ball);
-  B1.isGoal(ball);
   B1.reset();
 }
