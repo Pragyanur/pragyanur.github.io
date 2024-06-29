@@ -127,7 +127,7 @@ class Players {
   // player controls
   handleKeys() {
     const rotationSpeed = SPEED / 1500;
-    const positionSpeed = SPEED / 1.5;
+    const positionSpeed = 8;
     // change y coordinate by incrementing with position speed
     // change rotation acceleration of board by incrementing with rotation speed
     // LATER THIS ACCELERATION IS USED TO UPDATE ROTATION ANGLE
@@ -157,12 +157,12 @@ class Players {
     // constrain rotation acceleration
     // update rotated angle
     // angle = remainder of (angle / pi)
-    this.pos_1 = constrain(this.pos_1, y_min + this.size, y_max - this.size);
+    this.pos_1 = constrain(this.pos_1, y_min + this.size / 2, y_max - this.size / 2);
     this.rAcc_1 = constrain(this.rAcc_1, -1, 1);
     this.rot_1 += this.rAcc_1;
     this.rot_1 = this.rot_1 % PI;
     // for player 2
-    this.pos_2 = constrain(this.pos_2, y_min + this.size, y_max - this.size);
+    this.pos_2 = constrain(this.pos_2, y_min + this.size / 2, y_max - this.size / 2);
     this.rAcc_2 = constrain(this.rAcc_2, -1, 1);
     this.rot_2 += this.rAcc_2;
     this.rot_2 = this.rot_2 % PI;
@@ -205,14 +205,14 @@ class Players {
     if (shortestDist_1 <= ball.radius) {
       this.glow_1 = 255;
       // ball_speed_increase is proportional to rotation acceleration and dot product of velocity with board normal
-      ball.fac += abs(dotProduct_1 * this.rAcc_1) * SPEED ** 2.5;
+      ball.fac += abs(dotProduct_1 * this.rAcc_1) * SPEED ** 2.5 + abs(this.pos_1 - this.pp_1);
       // calculate reflected velocity vector using: r=d−2(d⋅n)n
       return createVector(initialVelocity.x - 2 * dotProduct_1 * normal_1.x, initialVelocity.y - 2 * dotProduct_1 * normal_1.y);;
     }
     // for player 2
     if (shortestDist_2 <= ball.radius) {
       this.glow_2 = 255;
-      ball.fac += abs(dotProduct_2 * this.rAcc_2) * SPEED ** 2.5;
+      ball.fac += abs(dotProduct_2 * this.rAcc_2) * SPEED ** 2.5 + abs(this.pos_2 - this.pp_2);
       return createVector(initialVelocity.x - 2 * dotProduct_2 * normal_2.x, initialVelocity.y - 2 * dotProduct_2 * normal_2.y);;
     }
     return ball.vel;    // return initial velocity if not hit
@@ -300,11 +300,13 @@ class Background {
     textFont(font);
     textAlign(CENTER, CENTER);
     push();
+    translate(0, 0, -h / 4 + 1);
     fill(SCORE_GLOW, SCORE_GLOW, this.rightGlow, this.rightGlow);
     textSize(SCORE_GLOW + this.rightGlow / 3);
     text(this.leftGoals, -width / 10, 0);
     pop();
     push();
+    translate(0, 0, -h / 4 + 1);
     fill(this.leftGlow, SCORE_GLOW, SCORE_GLOW, this.leftGlow);
     textSize(SCORE_GLOW + this.leftGlow / 3);
     text(this.rightGoals, width / 10, 0);
@@ -317,6 +319,7 @@ class Background {
 }
 // main setup
 function setup() {
+  fullscreen(true);
   createCanvas(windowWidth, windowHeight, WEBGL);
   x_max = width / 2;
   x_min = -x_max;
@@ -335,7 +338,7 @@ function draw() {
   pointLight(255, 255, 255, 0, 0, height / 3);
   pointLight(100, 100, 100, 0, 0, height / 2);
   // orbitControl();
-  camera(0, ball.pos.y * 0.1, 1000, ball.pos.x * 0.1, ball.pos.y * 0.1, 0);
+  camera(ball.pos.x * 0.2, ball.pos.y * 0.1, 1000, ball.pos.x * 0.1, ball.pos.y * 0.1, 0);
   B1.show();
   B1.reset();
   ball.show();
