@@ -26,7 +26,7 @@ window.onclick = function(event) {
 
 var art = document.getElementById("art");
 art.onclick = function() {
-  location.href = "../pages/all_projects.html";
+  location.href = "../pages/artProjects.html";
 }
 
 var code = document.getElementById("code");
