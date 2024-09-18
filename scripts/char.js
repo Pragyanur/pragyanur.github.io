@@ -1,8 +1,8 @@
 const SHADES = [" ", ".", ":", ";", "i", "+", "o", "O", "x", "X", "%", "A", "M", "B", "#", "@"];
-CHAR_SIZE = 10;
+const CHAR_SIZE = 20;
 
 let textPositions = [];
-let font, img, video;
+let video;
 
 function shade(n) {
   return SHADES[n];
