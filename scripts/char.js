@@ -1,5 +1,5 @@
 const SHADES = [" ", ".", ":", ";", "i", "+", "o", "O", "x", "X", "%", "A", "M", "B", "#", "@"];
-const CHAR_SIZE = 20;
+const CHAR_SIZE = 10;
 
 let textPositions = [];
 let video;
@@ -48,7 +48,7 @@ function gray_at_pixel(posx, posy) {
 function characters() {
   let n, value;
   for (let O of textPositions) {
-    value = gray_at_pixel(O.x, O.y)
+    value = gray_at_pixel(O.x, O.y);
     // value = max_gray(O.x, O.y);
     n = substitute(value);
     fill(255);
