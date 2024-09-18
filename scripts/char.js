@@ -2,63 +2,68 @@ const SHADES = [" ", ".", ":", ";", "i", "+", "o", "O", "x", "X", "%", "A", "M",
 CHAR_SIZE = 10;
 
 let textPositions = [];
-let font, img;
-
+let font, img, video;
 
 function shade(n) {
   return SHADES[n];
 }
 
 function substitute(gray_value) {
-  let intensity, index;
-  intensity = map(gray_value, 0, 255, 1, SHADES.length);
-  index = floor(intensity);
-  return index;
+  let intensity;
+  intensity = map(gray_value, 0, 255, 0, SHADES.length);
+  return floor(intensity);
 }
 
+// function max_gray(posx, posy) {
+//   let gray_value = 0;
+//   // Loop through the neighborhood
+//   for (let i = 0; i <= CHAR_SIZE; i++) {
+//     for (let j = 0; j <= CHAR_SIZE; j++) {
+//       let xNeighbor = constrain(posx + i, 0, video.width - 1);
+//       let yNeighbor = constrain(posy + j, 0, video.height - 1);
 
-function mean_filter(x, y, CHAR_SIZE) {
-  let maxR = 0, maxG = 0, maxB = 0;
-  let gray_value;
-  let halfKernel = floor(kernelSize / 2);
+//       let idx = (xNeighbor + yNeighbor * video.width) * 4;
 
-  // Loop through the neighborhood
-  for (let i = -halfKernel; i <= halfKernel; i++) {
-    for (let j = -halfKernel; j <= halfKernel; j++) {
-      let xNeighbor = constrain(x + i, 0, img.width - 1);
-      let yNeighbor = constrain(y + j, 0, img.height - 1);
+//       let r = video.pixels[idx];      // Red
+//       let g = video.pixels[idx + 1];  // Green
+//       let b = video.pixels[idx + 2];  // Blue
 
-      let idx = (xNeighbor + yNeighbor * img.width) * 4;
+//       let gv = 0.299 * r + 0.587 * g + 0.114 * b;
+//       gray_value = max(gray_value, gv);
+//     }
+//   }
+//   return gray_value;
+// }
 
-      let r = img.pixels[idx];     // Red
-      let g = img.pixels[idx + 1]; // Green
-      let b = img.pixels[idx + 2]; // Blue
-
-      // Update the maximum values
-      maxR = max(r, maxR);
-      maxG = max(g, maxG);
-      maxB = max(b, maxB);
-    }
-  }
+function gray_at_pixel(posx, posy) {
+  let mid = floor(CHAR_SIZE / 2);
+  let idx = 4 * (posx + mid + (posy + mid) * video.width);
+  let r = video.pixels[idx];
+  let g = video.pixels[idx + 1];
+  let b = video.pixels[idx + 2];
+  let gray_value = 0.299 * r + 0.587 * g + 0.114 * b;
+  return gray_value;
 }
 
 function characters() {
+  let n, value;
   for (let O of textPositions) {
-    textSize(1.2 * CHAR_SIZE);
-    text('O', O.x, O.y);
+    value = gray_at_pixel(O.x, O.y)
+    // value = max_gray(O.x, O.y);
+    n = substitute(value);
+    fill(255);
+    textSize(CHAR_SIZE);
+    text(SHADES[n], O.x, O.y);
   }
 }
 
-
 // main
-
-function preload() {
-  img = loadImage('/store/rare_worms.gif');
-  font = loadFont('/store/MigaeSemibold-3zd2M.otf');
-}
-
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  video = createCapture(VIDEO);
+  video.size(width, height);
+  video.hide();
+  // noLoop();
   for (let i = 0; i < width; i += CHAR_SIZE) {
     for (let j = 0; j < height; j += CHAR_SIZE) {
       p = createVector(i, j);
@@ -66,9 +71,12 @@ function setup() {
     }
   }
 }
-
 function draw() {
-  background(255);
-  // list of image pixels
+  background(0);
+  video.loadPixels();
+
   characters();
+}
+function mousePressed() {
+  redraw();  // Redraw the canvas when the mouse is pressed
 }
