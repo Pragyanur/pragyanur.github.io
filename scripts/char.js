@@ -49,10 +49,14 @@ function characters() {
   }
 }
 
+
+// main
+
 function preload() {
   img = loadImage('/store/rare_worms.gif');
   font = loadFont('/store/MigaeSemibold-3zd2M.otf');
 }
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   for (let i = 0; i < width; i += CHAR_SIZE) {
@@ -61,7 +65,6 @@ function setup() {
       textPositions.push(p);
     }
   }
-
 }
 
 function draw() {
