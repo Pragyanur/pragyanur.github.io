@@ -1,5 +1,5 @@
 const SHADES = [" ", ".", ":", ";", "i", "+", "o", "O", "x", "X", "%", "A", "M", "B", "#", "@"];
-const CHAR_SIZE = 10;
+const CHAR_SIZE = 16;
 
 let textPositions = [];
 let video;
@@ -51,7 +51,7 @@ function characters() {
     value = gray_at_pixel(O.x, O.y);
     // value = max_gray(O.x, O.y);
     n = substitute(value);
-    fill(255);
+    fill(map(value, 0, 255, 50, 255));
     textSize(CHAR_SIZE);
     text(SHADES[n], O.x, O.y);
   }
@@ -59,8 +59,10 @@ function characters() {
 
 // main
 function setup() {
-  createCanvas(windowWidth, windowHeight);
   video = createCapture(VIDEO);
+  let fac;
+  fac = windowWidth > windowHeight ? (windowHeight / video.height) : (windowWidth / video.width);
+  createCanvas(video.width * fac, video.height * fac);
   video.size(width, height);
   video.hide();
   // noLoop();
@@ -72,9 +74,8 @@ function setup() {
   }
 }
 function draw() {
-  background(0);
   video.loadPixels();
-
+  background(0);
   characters();
 }
 function mousePressed() {
