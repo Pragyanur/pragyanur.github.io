@@ -4,10 +4,6 @@ const CHAR_SIZE = 16;
 let textPositions = [];
 let video;
 
-function shade(n) {
-  return SHADES[n];
-}
-
 function substitute(gray_value) {
   let intensity;
   intensity = map(gray_value, 0, 255, 0, SHADES.length);
