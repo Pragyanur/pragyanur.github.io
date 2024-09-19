@@ -51,7 +51,8 @@ function characters() {
     value = gray_at_pixel(O.x, O.y);
     // value = max_gray(O.x, O.y);
     n = substitute(value);
-    fill(map(value, 0, 255, 50, 255));
+    fill(value);
+    // fill(255);
     textSize(CHAR_SIZE);
     text(SHADES[n], O.x, O.y);
   }
