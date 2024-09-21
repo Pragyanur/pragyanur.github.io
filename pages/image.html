@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Upload with p5.js</title>
+  <script src="/scripts/p5.min.js"></script>
+  <style>
+    canvas {
+      padding: 10px;
+      border-radius: 10px;
+      transition: 0.5s;
+      margin: 5px 0px;
+      background-image: url('../store/clouds.png');
+      background-size: cover;
+    }
+
+    canvas:hover {}
+
+    #inp {
+      border: black 3px solid;
+      color: rgb(201, 105, 105);
+      background-color: rgb(255, 255, 255);
+      padding: 10px;
+      border-radius: 10px;
+      transition: 0.5s;
+    }
+
+    #inp:hover {
+      background-color: darkseagreen;
+      color: green;
+    }
+
+    #inp::-webkit-file-upload-button {
+      border: none;
+      color: rgb(255, 238, 238);
+      background-color: rgb(189, 63, 63);
+      padding: 5px;
+      border-radius: 5px;
+      transition: 0.5s;
+    }
+
+    #inp::-webkit-file-upload-button:hover {
+      color: rgb(76, 143, 34);
+      background-color: rgb(255, 255, 255);
+    }
+  </style>
+</head>
+
+<body
+  style="display: flex; flex-direction: column; align-items: center; margin: 0px; background-color: rgb(9, 45, 76); color: whitesmoke; padding: 10px;">
+  <div style="">
+    <h3>Upload and Display a processed Image</h3>
+    <script src="/scripts/image.js"></script>
+</body>
+
+</html>
