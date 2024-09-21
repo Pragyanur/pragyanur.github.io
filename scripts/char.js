@@ -4,10 +4,6 @@ const CHAR_SIZE = 16;
 let textPositions = [];
 let video;
 
-function shade(n) {
-  return SHADES[n];
-}
-
 function substitute(gray_value) {
   let intensity;
   intensity = map(gray_value, 0, 255, 0, SHADES.length);
@@ -61,9 +57,7 @@ function characters() {
 // main
 function setup() {
   video = createCapture(VIDEO);
-  let fac;
-  fac = windowWidth > windowHeight ? (windowHeight / video.height) : (windowWidth / video.width);
-  createCanvas(video.width * fac, video.height * fac);
+  createCanvas(windowWidth, windowHeight);
   video.size(width, height);
   video.hide();
   // noLoop();
