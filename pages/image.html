@@ -7,52 +7,102 @@
   <title>Image Upload with p5.js</title>
   <script src="/scripts/p5.min.js"></script>
   <style>
-    canvas {
+    body {
+      cursor: context-menu;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      margin: 0px;
+      background-color: rgb(255, 255, 255);
+      color: rgb(21, 81, 104);
       padding: 10px;
-      border-radius: 10px;
-      transition: 0.5s;
-      margin: 5px 0px;
-      background-image: url('../store/clouds.png');
-      background-size: cover;
     }
 
-    canvas:hover {}
+    h2 {
+      border: 2px black solid;
+      text-align: center;
+      padding: 10px;
+      box-shadow: 4px 6px black;
+      transition: 0.3s;
+    }
+
+    h2:hover {
+      color: rgb(240, 251, 255);
+      background-color: rgb(21, 81, 104);
+      box-shadow: 2px 3px black;
+    }
+
+    canvas {
+      padding: 10px;
+      border: 2px solid black;
+      transition: 0.3s;
+      margin: 5px 0px;
+      background-color: rgb(255, 255, 255);
+    }
+
+    canvas:hover {
+      background-color: rgb(17, 64, 82);
+    }
+
+    a {
+      color: white;
+      background-color: rgb(21, 81, 104);
+      text-decoration: none;
+      transition: 0.2s;
+      border: 1px rgb(21, 81, 104) solid;
+      box-shadow: 0px 0px rgb(21, 81, 104);
+    }
+    a:hover {
+      color: rgb(21, 81, 104);
+      background-color: white;
+      padding: 5px;
+      border: 1px rgb(21, 81, 104) solid;
+      box-shadow: -5px 5px rgb(21, 81, 104);
+    }
 
     #inp {
-      border: black 3px solid;
+      border: black 2px solid;
       color: rgb(201, 105, 105);
       background-color: rgb(255, 255, 255);
       padding: 10px;
-      border-radius: 10px;
-      transition: 0.5s;
+      transition: 0.3s;
     }
 
-    #inp:hover {
-      background-color: darkseagreen;
-      color: green;
+    #inp:hover,
+    #inp:focus {
+      background-color: rgb(156, 194, 133);
+      color: rgb(47, 93, 18);
     }
 
     #inp::-webkit-file-upload-button {
-      border: none;
+      border: 2px black solid;
       color: rgb(255, 238, 238);
       background-color: rgb(189, 63, 63);
       padding: 5px;
-      border-radius: 5px;
-      transition: 0.5s;
+      transition: 0.3s;
     }
 
-    #inp::-webkit-file-upload-button:hover {
-      color: rgb(76, 143, 34);
+    #inp::-webkit-file-upload-button:hover,
+    #inp::-webkit-file-upload-button:focus {
+      color: rgb(76, 133, 40);
       background-color: rgb(255, 255, 255);
     }
   </style>
 </head>
 
-<body
-  style="display: flex; flex-direction: column; align-items: center; margin: 0px; background-color: rgb(9, 45, 76); color: whitesmoke; padding: 10px;">
-  <div style="">
-    <h3>Upload and Display a processed Image</h3>
-    <script src="/scripts/image.js"></script>
+<body">
+    <h2>Upload and Display a processed Image</h2>
+    <div>
+      <p>No data is saved, check source code for verification. To process your image with the effect shown here, do the
+        following:</p>
+      <ol>
+        <li>If you want to convert jpg/jpeg to png <a href="/pages/convert.html">click</a></li>
+        <li>Choose a png file</li>
+        <li>Right click on the image to save</li>
+      </ol>
+  </div>
+  <script src="/scripts/image.js"></script>
 </body>
 
 </html>

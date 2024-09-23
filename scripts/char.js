@@ -57,8 +57,14 @@ function characters() {
 // main
 function setup() {
   video = createCapture(VIDEO);
-  createCanvas(windowWidth, windowHeight);
-  video.size(width, height);
+  // let w = (9 / 10) * windowWidth;
+  // let fac = video.height / video.width;
+  // let h = fac * w;
+  let w = windowWidth;
+  let h = windowHeight;
+
+  createCanvas(w, h);
+  video.size(w, h);
   video.hide();
   // noLoop();
   for (let i = 0; i < width; i += CHAR_SIZE) {
