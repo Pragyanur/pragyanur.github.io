@@ -74,17 +74,17 @@ h4:hover {
 
 .fixed {
     border: rgb(180, 180, 180) 1px solid;
-    background-color: rgb(36, 36, 36);
+    background-color: rgb(0, 0, 0);
     background-position: center;
     font-size: 2vw;
     padding: 1vw 2vw;
-    box-shadow: 3px 3px 0px rgb(184, 184, 184);
+    box-shadow: 3px 3px rgb(184, 184, 184);
     transition: 0.3s;
 }
 
 .fixed:hover {
-    background-color: rgb(80, 80, 80);
-    box-shadow: 0px 0px 0px rgb(255, 255, 255);
+    background-color: rgb(52, 52, 52);
+    box-shadow: 0px 0px rgb(255, 255, 255);
     transform: translate(3px, 3px);
     transition: 0.3s;
 }
@@ -133,6 +133,7 @@ h4:hover {
 }
 
 .prj {
+    background-color: #000000a9;
     flex: 1;
     padding: 0vw 2vw 2vw 2vw;
     border: 1px solid white;
@@ -141,7 +142,7 @@ h4:hover {
 }
 
 .prj:hover {
-    background-color: rgba(255, 255, 255, 0.10);
+    background-color: rgba(255, 255, 255, 0.162);
     transition: 0.5s;
 }
 
