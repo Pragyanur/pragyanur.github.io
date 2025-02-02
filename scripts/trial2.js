@@ -31,13 +31,13 @@ class DotRing {
     }
   }
 }
-
+const RINGS = 22
 function setup() {
-  createCanvas(720, 720);
+  createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
   frameRate(30);
   cen = createVector(width / 2, height / 2);
-  for (let i = 1; i < 21; i++) {
+  for (let i = 1; i < RINGS; i++) {
     let ring = new DotRing(i * VAR1, i * VAR2);
     rings[i - 1] = ring;
   }
@@ -45,7 +45,7 @@ function setup() {
 
 function draw() {
   background(90, 30, 75);
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < RINGS - 1; i++) {
     rings[i].dotStyle();
   }
 }
