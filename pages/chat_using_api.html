@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenAI Chat</title>
+    <style>
+        #a {
+            padding: 10px;
+            display: flexbox;
+            justify-items: center;
+        }
+
+        #b {
+            display: flexbox;
+            justify-items: center;
+        }
+
+
+        input {
+            width: 100%;
+            padding: 5px;
+        }
+
+        button {
+            margin-top: 5px;
+            border-radius: 0px;
+            background-color: whitesmoke;
+        }
+        button:hover {
+            color: white;
+            background-color: black;
+        }
+        button:active {
+            color: rgb(255, 255, 255);
+            background-color: green;
+        }
+
+        p {
+            border: dotted rgb(0, 0, 0) 5px;
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="a">
+        <h1>OpenAI ৰ সৈতে আড্ডা কৰক</h1>
+        <h2>(Chat with OpenAI)</h2>
+        <label>API-KEY সুমুৱাওক (Enter API Key):</label>
+        <input type="password" id="apiKey" placeholder="তলত দিয়া 'KEY' টো ব্যৱহাৰ কৰক (Use the key given below)" autocomplete="off">
+        <p>sk-proj-uFX3Fayx3kbMeIS4zbhvhJfLg6yBgefY0lqgB2XXfqAbGNok1REqhqiI0zSx2F3TclF_FRCKuxTB3lbkFJc55ucKka4ByknkVWw3VRjnXUkkG1-M_ep7iRTIrmKRNYS0UmNc-QZExyy6Mbw3n-_lxO6wY_EA</p>
+        <div id="b">
+            <label>প্ৰশ্ন প্ৰৱেশ কৰক (Enter Query):</label>
+            <input type="text" id="userMessage" placeholder="আপোনাৰ প্ৰশ্নটো টাইপ কৰক (Type your query)">
+            <button onclick="sendMessage()">সোধক (Ask)</button>
+            <p id="response">ইয়াত উত্তৰ প্ৰদৰ্শিত হ’ব (Reply will be displayed here)</p>
+        </div>
+    </div>
+
+    <script src="/scripts/chatasm.js"></script>
+</body>
+
+</html>
