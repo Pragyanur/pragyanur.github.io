@@ -34,7 +34,7 @@ async function sendMessage() {
     const data = await response.json();
     document.getElementById("response").innerText = data.choices
       ? data.choices[0].message.content
-      : "Error!";
+      : "Error!, Key didn't work.";
   } catch (error) {
     document.getElementById("response").innerText = "API request failed.";
   }
