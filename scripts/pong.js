@@ -1,5 +1,5 @@
 const BALL_SIZE = 20;
-const SPEED = 15;
+const SPEED = 20;
 const BOARD_GLOW = 80;
 const SCORE_GLOW = 80;
 const BACKGROUND_COLOR = [0, 70, 50];
