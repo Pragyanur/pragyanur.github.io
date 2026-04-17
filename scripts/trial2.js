@@ -4,35 +4,40 @@ let score = 0;
 let currentGift = null;
 let text_size = 30;
 let animations = {}; // Container for all your GIFs
-let currentAnimation; // This will hold the one currently playing
-let reactionTimer = 0;
+let currentAnimation;
+let isMovingLeft = false;
+let isMovingRight = false;
+let reactionTimer = 1000;
+let state = "disappointed";
 
 function preload() {
-  // Load each gif into the object
-  animations.runleft = loadImage('../store/game store/run left.gif');
-  animations.runright = loadImage('../store/game store/run right.gif')
-  animations.content = loadImage('../store/game store/content.gif');
-  animations.angry = loadImage('../store/game store/angry.gif');
-  animations.disappointed = loadImage('../store/game store/disappointed.gif');
+  // Use loadImage so the GIF becomes part of the p5 canvas
+  animations.runleft = loadImage('../store/game-store/run-left.gif');
+  animations.runright = loadImage('../store/game-store/run-right.gif');
+  animations.content = loadImage('../store/game-store/content.gif');
+  animations.angry = loadImage('../store/game-store/angry.gif');
+  animations.disappointed = loadImage('../store/game-store/disappointed.gif');
+  bgImg = loadImage('../store/bg.png');
 }
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   currentAnimation = animations.disappointed;
+  // animations.disappointed.loop();
 
   // Initializing the girl object
   girl = {
     x: width / 2,
-    y: height - 50,
-    w: 50,
-    h: 50,
+    y: height - 100,
+    w: 100,
+    h: 100,
     speed: 5
   };
 }
 
 function draw() {
-  background(200,250,255); // Alice Blue
-  
+  // background(200,250,255); // Alice Blue
+  image(bgImg, 0, 0, width, height);  
   // Draw the "Ground"
   fill(100, 200, 100);
   noStroke();
@@ -52,6 +57,51 @@ function draw() {
   text("Gifts worth Rs. " + score + "/-", width/2, height/2);
   pop();
   
+
+  // --- ANIMATION STATE LOGIC ---
+  // --- 1. DECIDE THE STATE ---
+  let newState = "";
+
+  // Priority 1: Reactions (Content/Angry)
+  if (millis() < reactionTimer) {
+    // If the timer is still active, keep the current reaction state
+    // We set this in the collision logic below
+    newState = state; 
+  } 
+  // Priority 2: Movement
+  else if (isMovingLeft) {
+    newState = "runleft";
+  } else if (isMovingRight) {
+    newState = "runright";
+  } 
+  // Priority 3: Idle
+  else {
+    newState = "disappointed";
+  }
+
+  // --- 2. UPDATE THE GIF (The "Gate") ---
+  // Only change the animation if the state actually switched
+  if (currentAnimation !== animations[newState]) {
+    currentAnimation = animations[newState];
+    state = newState; // Keep the 'state' variable in sync
+    
+    // Safety: Reset the GIF to frame 0 so it starts from the beginning
+    if (currentAnimation && currentAnimation.reset) {
+      currentAnimation.reset();
+    }
+  }
+
+  // --- 3. DRAW THE GIRL ---
+  // Note: Using (girl.x, girl.y) and imageMode(CENTER) is safer
+  push();
+  imageMode(CENTER);
+  image(currentAnimation, girl.x, girl.y, girl.w * 2, girl.h * 2);
+  pop();
+
+  // --- 4. RESET FLAGS ---
+  // isMovingLeft = false;
+  // isMovingRight = false;
+
   // If a gift is currently being "charged" by holding the mouse
   if (currentGift) {
     currentGift.size += 1; // Increase size while holding
@@ -110,63 +160,40 @@ function draw() {
       }
     }
     // girl chases for the target
-    if (target.gift.x > girl.x + 20) {
-      girl.x += girl.speed;
+    if (abs(target.gift.x - girl.x) > 5) { // Only move if she's more than 5px away
+    if (target.gift.x > girl.x) {
+        girl.x += girl.speed;
+        isMovingRight = true;
+    } else {
+        girl.x -= girl.speed;
+        isMovingLeft = true;
     }
-    else if (target.gift.x < girl.x - 20) {
-      girl.x -= girl.speed;
-    }
+}
   }
   
+
+
   // --- USER LOGIC END ---
 
   //gif logic
-  background(bgImg); // Assuming you have your background
 
   // --- ANIMATION SELECTION ---
   // If the timer has run out, go back to normal walking
-  if (millis() > reactionTimer) {
-    currentAnimation = animations.walk;
-  }
 
   // --- DRAW THE SELECTED GIF ---
-  imageMode(CENTER);
-  image(currentAnimation, girl.x, girl.y, girl.w, girl.h);
-  imageMode(CORNER);
-
-  // --- TRIGGERING THE SWITCH ---
-  for (let i = gifts.length - 1; i >= 0; i--) {
-    let g = gifts[i];
-    
-    // Check for Catch
-    let d = dist(girl.x, girl.y, g.x, g.y);
-    if (d < 40) {
-      if (g.size > 60) {
-        // SELECT HAPPY GIF
-        currentAnimation = animations.happy;
-        reactionTimer = millis() + 2000; // Play for 2 seconds
-      }
-      gifts.splice(i, 1);
-      score++;
-    } 
-    
-    // Check for Miss (Hits floor)
-    if (g.y > height - 30) {
-      // SELECT SAD GIF
-      currentAnimation = animations.sad;
-      reactionTimer = millis() + 1000; // Play for 1 second
-      gifts.splice(i, 1);
-    }
-  }
-
+  // imageMode(CENTER);
+  // imageMode(CORNER);
 
   // Draw the Girl
-  push();
-  fill(220, 155, 155); // Pink
-  rectMode(CENTER);
-  rect(girl.x, girl.y, girl.w, girl.h);
-  rectMode(CORNER); // Reset to default
-  pop();
+  // push();
+  // fill(220, 155, 155); // Pink
+  // rectMode(CENTER);
+  // rect(girl.x, girl.y, girl.w, girl.h);
+  // rectMode(CORNER); // Reset to default
+  // pop();
+
+
+
   // Manage Gifts
   for (let i = gifts.length - 1; i >= 0; i--) {
     let g = gifts[i];
@@ -190,14 +217,23 @@ function draw() {
     // Check for "Catch" (Collision)
     // We check if the distance between the center of the girl and gift is small
     let d = dist(girl.x, girl.y, g.x, g.y);
+    // Check for "Catch" (Collision)
     if (d < 40) {
       gifts.splice(i, 1);
       score += g.size;
       text_size = 35;
+      
+      // TRIGGER REACTION
+      state = "content"; 
+      reactionTimer = millis() + 1500; // Smile for 1.5 seconds
     } 
-    // Remove if it hits the ground
+    // Remove if it hits the ground (Miss)
     else if (g.y > height - 40) {
       gifts.splice(i, 1);
+      
+      // TRIGGER REACTION
+      state = "angry"; 
+      reactionTimer = millis() + 1000; // Stay angry for 1 second
     }
   }
 
