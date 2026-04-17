@@ -58,13 +58,16 @@ class Confetti {
 
 function setup() {
 createCanvas(windowWidth, windowHeight);
-  
+
   // Force every GIF in your object to start its internal timer
   for (let key in animations) {
     if (animations[key].loop) {
       animations[key].loop();
     }
   }
+  if (width>height) sprite_size = width/12;
+  else sprite_size = height/12;
+  sprite_size = constrain(sprite_size, 140, 180);
 
   currentAnimation = animations.disappointed;
   // Initializing the girl object
@@ -114,7 +117,9 @@ function draw() {
   text("Create gifts for Shruti by clicking anywhere", width/2, height/10);
   text("Press and hold to increase size of the gift", width/2, height/7);
   pop();
-  
+
+  score = constrain(score, 0, 40000);
+
   // Scoreboard
   push();
   textFont('Comic Sans MS');
@@ -164,7 +169,7 @@ function draw() {
   // Priority 3: Idle
   else {
     newState = "disappointed";
-    if (score > 1000) newState = "content";
+    if (score > 2500) newState = "content";
   }
 
   // --- 2. UPDATE THE GIF (The "Gate") ---
