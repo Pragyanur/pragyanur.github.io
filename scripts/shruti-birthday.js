@@ -122,9 +122,10 @@ function draw() {
   stroke(220, 155, 155);
   strokeWeight(4);
   textSize(text_size);
-  if (text_size != 30) {
+  if (text_size > 30) {
     text_size -= 0.5;
   }
+  else text_size = 30;
   textAlign(CENTER);
   text("Gifts worth Rs. " + score + "/-", width/2, height/5);
   pop();
