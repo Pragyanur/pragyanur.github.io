@@ -67,7 +67,7 @@ createCanvas(windowWidth, windowHeight);
   }
   if (width>height) sprite_size = width/12;
   else sprite_size = height/12;
-  sprite_size = constrain(sprite_size, 140, 180);
+  sprite_size = constrain(sprite_size, 120, 180);
 
   currentAnimation = animations.disappointed;
   // Initializing the girl object
