@@ -77,15 +77,39 @@ createCanvas(windowWidth, windowHeight);
   };
 }
 
+function drawBackground() {
+  let imgRatio = bgImg.width / bgImg.height;
+  let canvasRatio = width / height;
+  let renderW, renderH, offset;
+
+  if (canvasRatio > imgRatio) {
+    // Canvas is wider than the image
+    renderW = width;
+    renderH = width / imgRatio;
+  } else {
+    // Canvas is taller than the image
+    renderH = height;
+    renderW = height * imgRatio;
+  }
+
+  // Draw from the center so the edges get cropped equally
+  imageMode(CENTER);
+  image(bgImg, width / 2, height / 2, renderW, renderH);
+  imageMode(CORNER); // Reset for gifts/girl
+}
+
 function draw() {
   // background(200,250,255); // Alice Blue
-  image(bgImg, 0, 0, width, height);  
+  // image(bgImg, 0, 0, width, height);
+  drawBackground();
   push();
   textFont('Comic Sans MS');
   fill(255);
   stroke(155, 155, 220);
   strokeWeight(4);
-  textSize(width/55);
+  if (width>height) ts = width/55;
+  else ts = height/55;
+  textSize(ts);
   textAlign(CENTER);
   text("Create gifts for Shruti by clicking anywhere", width/2, height/10);
   text("Press and hold to increase size of the gift", width/2, height/7);
