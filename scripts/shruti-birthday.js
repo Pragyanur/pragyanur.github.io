@@ -7,42 +7,90 @@ let animations = {}; // Container for all your GIFs
 let currentAnimation;
 let isMovingLeft = false;
 let isMovingRight = false;
-let reactionTimer = 1000;
+let reactionTimer = 0;
 let state = "disappointed";
+let particles = [];
+let sprite_size = 150;
 
 function preload() {
   // Use loadImage so the GIF becomes part of the p5 canvas
-  animations.runleft = loadImage('../store/game-store/run-left.gif');
-  animations.runright = loadImage('../store/game-store/run-right.gif');
-  animations.content = loadImage('../store/game-store/content.gif');
-  animations.angry = loadImage('../store/game-store/angry.gif');
-  animations.disappointed = loadImage('../store/game-store/disappointed.gif');
-  bgImg = loadImage('../store/bg.png');
+  animations.runleft = loadGif('../store/game-store/run-left.gif');
+  animations.runright = loadGif('../store/game-store/run-right.gif');
+  animations.content = loadGif('../store/game-store/content.gif');
+  animations.angry = loadGif('../store/game-store/angry.gif');
+  animations.disappointed = loadGif('../store/game-store/disappointed.gif');
+  bgImg = loadImage('../store/bg2.png');
+}
+
+class Confetti {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.size = random(5, 12);
+    this.color = color(random(255), random(255), random(255));
+    this.speedX = random(-3, 3);
+    this.speedY = random(-5, -1); // Burst upwards
+    this.gravity = 0.05;
+    this.rotation = random(TWO_PI);
+    this.spin = random(-0.1, 0.1);
+    this.life = 555; // Fade out
+  }
+
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    this.speedY += this.gravity;
+    this.rotation += this.spin;
+    this.life -= 4; // How fast they disappear
+  }
+
+  display() {
+    push();
+    translate(this.x, this.y);
+    rotate(this.rotation);
+    fill(red(this.color), green(this.color), blue(this.color), this.life);
+    noStroke();
+    // Confetti can be rectangles or triangles
+    rect(0, 0, this.size, this.size / 2);
+    pop();
+  }
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  currentAnimation = animations.disappointed;
-  // animations.disappointed.loop();
+createCanvas(windowWidth, windowHeight);
+  
+  // Force every GIF in your object to start its internal timer
+  for (let key in animations) {
+    if (animations[key].loop) {
+      animations[key].loop();
+    }
+  }
 
+  currentAnimation = animations.disappointed;
   // Initializing the girl object
   girl = {
     x: width / 2,
-    y: height - 100,
-    w: 100,
-    h: 100,
-    speed: 5
+    y: height - sprite_size,
+    w: sprite_size,
+    h: sprite_size,
+    speed: 4
   };
 }
 
 function draw() {
   // background(200,250,255); // Alice Blue
   image(bgImg, 0, 0, width, height);  
-  // Draw the "Ground"
-  fill(100, 200, 100);
-  noStroke();
-  rect(0, height - 20, width, 20);
-
+  push();
+  textFont('Comic Sans MS');
+  fill(255);
+  stroke(155, 155, 220);
+  strokeWeight(4);
+  textSize(width/40);
+  textAlign(CENTER);
+  text("Create gifts for Shruti by clicking anywhere", width/2, height/10);
+  text("Press and hold to increase size of the gift", width/2, height/7);
+  pop();
+  
   // Scoreboard
   push();
   textFont('Comic Sans MS');
@@ -54,7 +102,7 @@ function draw() {
     text_size -= 0.5;
   }
   textAlign(CENTER);
-  text("Gifts worth Rs. " + score + "/-", width/2, height/2);
+  text("Gifts worth Rs. " + score + "/-", width/2, height/5);
   pop();
   
 
@@ -99,13 +147,13 @@ function draw() {
   pop();
 
   // --- 4. RESET FLAGS ---
-  // isMovingLeft = false;
-  // isMovingRight = false;
+  isMovingLeft = false;
+  isMovingRight = false;
 
   // If a gift is currently being "charged" by holding the mouse
   if (currentGift) {
     currentGift.size += 1; // Increase size while holding
-    currentGift.size = constrain(currentGift.size, 10, 60); // Set a max size limit
+    currentGift.size = constrain(currentGift.size, 20, 100); // Set a max size limit
     push();
     // Draw the preview of the gift at the mouse position
     fill(254, 234, 201, 150); // Semi-transparent gold
@@ -168,21 +216,14 @@ function draw() {
         girl.x -= girl.speed;
         isMovingLeft = true;
     }
-}
+  }
+    else {
+        isMovingRight = false;
+        isMovingLeft = false;
+    }
+
   }
   
-
-
-  // --- USER LOGIC END ---
-
-  //gif logic
-
-  // --- ANIMATION SELECTION ---
-  // If the timer has run out, go back to normal walking
-
-  // --- DRAW THE SELECTED GIF ---
-  // imageMode(CENTER);
-  // imageMode(CORNER);
 
   // Draw the Girl
   // push();
@@ -205,6 +246,7 @@ function draw() {
     push();
     fill(254, 234, 201); // Gold
     stroke(220, 155, 155);
+    strokeWeight(2);
     rect(g.x - g.size/2, g.y - g.size/2, g.size, g.size);
     rect(g.x - g.size/2-1,g.y - g.size/2, g.size+2, g.size/4);
     fill(220,115,115);
@@ -218,25 +260,37 @@ function draw() {
     // We check if the distance between the center of the girl and gift is small
     let d = dist(girl.x, girl.y, g.x, g.y);
     // Check for "Catch" (Collision)
-    if (d < 40) {
+    if (d < sprite_size/2) {
       gifts.splice(i, 1);
       score += g.size;
-      text_size = 35;
-      
-      // TRIGGER REACTION
+      text_size = text_size*1.2;
       state = "content"; 
-      reactionTimer = millis() + 1500; // Smile for 1.5 seconds
-    } 
+      if (g.size > 60)
+        reactionTimer = millis() +500; // Smile for 1.5 seconds
+      else reactionTimer = millis() +200;
+  // --- ADD THIS: Burst of 15 confetti pieces ---
+  for (let j = 0; j < 15; j++) {
+    particles.push(new Confetti(girl.x, girl.y - 20));
+  }
+} 
     // Remove if it hits the ground (Miss)
     else if (g.y > height - 40) {
       gifts.splice(i, 1);
       
       // TRIGGER REACTION
       state = "angry"; 
-      reactionTimer = millis() + 1000; // Stay angry for 1 second
+      reactionTimer = millis() + 500; // Stay angry for 1 second
     }
   }
-
+for (let i = particles.length - 1; i >= 0; i--) {
+  particles[i].update();
+  particles[i].display();
+  
+  // Remove dead particles to keep the game fast
+  if (particles[i].life <= 0) {
+    particles.splice(i, 1);
+  }
+}
 
 }
 
@@ -255,7 +309,7 @@ function mouseReleased() {
     // Update its final position to where the mouse is now
     currentGift.x = mouseX;
     currentGift.y = mouseY;
-    currentGift.fallSpeed = random(exp(currentGift.size/30), exp(currentGift.size/30));
+    currentGift.fallSpeed = random(exp(currentGift.size/60), exp(currentGift.size/60));
     // Add it to the main array so it starts falling
     gifts.push(currentGift);
     
