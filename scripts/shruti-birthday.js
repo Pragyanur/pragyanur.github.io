@@ -133,7 +133,7 @@ function draw() {
 
 // Adjust this number to change difficulty: 
 // 60 means 1 gift every second (since p5 runs at 60fps)
-  if (frameCount % 60 === 0) {
+  if (frameCount % 240 === 0) {
     let newGift = {
       x: random(50, width - 50), // Random horizontal position
       y: -10,                    // Start just above the screen
