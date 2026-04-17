@@ -2,7 +2,7 @@ let gifts = [];
 let girl;
 let score = 0;
 let currentGift = null;
-let text_size = 30;
+let text_size = 20;
 let animations = {}; // Container for all your GIFs
 let currentAnimation;
 let isMovingLeft = false;
@@ -19,7 +19,7 @@ function preload() {
   animations.content = loadGif('../store/game-store/content.gif');
   animations.angry = loadGif('../store/game-store/angry.gif');
   animations.disappointed = loadGif('../store/game-store/disappointed.gif');
-  bgImg = loadImage('../store/bg2.png');
+  bgImg = loadImage('../store/bg3.png');
 }
 
 class Confetti {
@@ -106,6 +106,20 @@ function draw() {
   pop();
   
 
+// Adjust this number to change difficulty: 
+// 60 means 1 gift every second (since p5 runs at 60fps)
+  if (frameCount % 60 === 0) {
+    let newGift = {
+      x: random(50, width - 50), // Random horizontal position
+      y: -10,                    // Start just above the screen
+      size: random(20, 50),      // Random value/size
+      fallSpeed: random(2, 3)    // Random falling speed
+    };
+    
+    gifts.push(newGift);
+  }
+
+
   // --- ANIMATION STATE LOGIC ---
   // --- 1. DECIDE THE STATE ---
   let newState = "";
@@ -171,7 +185,7 @@ function draw() {
     closest = gifts[0];
     target = {
       set: false,
-      time_to_reach: 9999,
+      time_to_reach: 99999,
       gift: gifts[0]
     };
     for (let i = gifts.length - 1; i >= 0; i--) {
@@ -262,7 +276,7 @@ function draw() {
     // Check for "Catch" (Collision)
     if (d < sprite_size/2) {
       gifts.splice(i, 1);
-      score += g.size;
+      score += ceil(g.size);
       text_size = text_size*1.2;
       state = "content"; 
       if (g.size > 60)
