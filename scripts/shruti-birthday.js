@@ -2,7 +2,7 @@ let gifts = [];
 let girl;
 let score = 0;
 let currentGift = null;
-let text_size = 20;
+let text_size = 30;
 let animations = {}; // Container for all your GIFs
 let currentAnimation;
 let isMovingLeft = false;
@@ -85,7 +85,7 @@ function draw() {
   fill(255);
   stroke(155, 155, 220);
   strokeWeight(4);
-  textSize(width/40);
+  textSize(width/55);
   textAlign(CENTER);
   text("Create gifts for Shruti by clicking anywhere", width/2, height/10);
   text("Press and hold to increase size of the gift", width/2, height/7);
