@@ -164,6 +164,7 @@ function draw() {
   // Priority 3: Idle
   else {
     newState = "disappointed";
+    if (score > 1000) newState = "content";
   }
 
   // --- 2. UPDATE THE GIF (The "Gate") ---
@@ -307,8 +308,9 @@ function draw() {
       if (g.size > 60)
         reactionTimer = millis() +500; // Smile for 1.5 seconds
       else reactionTimer = millis() +200;
-  // --- ADD THIS: Burst of 15 confetti pieces ---
-  for (let j = 0; j < 15; j++) {
+
+      // --- Burst of 15 confetti pieces ---
+  for (let j = 0; j < 20; j++) {
     particles.push(new Confetti(girl.x, girl.y - 20));
   }
 } 
