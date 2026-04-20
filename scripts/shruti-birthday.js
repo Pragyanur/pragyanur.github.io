@@ -114,8 +114,7 @@ function draw() {
   else ts = height/55;
   textSize(ts);
   textAlign(CENTER);
-  text("Create gifts for Shruti by clicking anywhere", width/2, height/10);
-  text("Press and hold to increase size of the gift", width/2, height/7);
+  text("Click and hold to create gifts for Shruti", width/2, height/10);
   pop();
 
   score = constrain(score, 0, 40000);
@@ -129,7 +128,7 @@ function draw() {
   textSize(text_size);
   constraint(text_size, 30, 80)
   if (text_size > 30) {
-    text_size -= 0.5;
+    text_size -= 1;
   }
   else text_size = 30;
 
@@ -140,7 +139,7 @@ function draw() {
 
 // Adjust this number to change difficulty: 
 // 60 means 1 gift every second (since p5 runs at 60fps)
-  if (frameCount % 240 === 0) {
+  if (frameCount % 300 === 0) {
     let newGift = {
       x: random(50, width - 50), // Random horizontal position
       y: -10,                    // Start just above the screen
