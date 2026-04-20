@@ -125,8 +125,9 @@ function draw() {
   fill(255);
   stroke(220, 155, 155);
   strokeWeight(4);
+  constraint(text_size, 20, 80);
   textSize(text_size);
-  constraint(text_size, 30, 80)
+
   if (text_size > 30) {
     text_size -= 1;
   }
