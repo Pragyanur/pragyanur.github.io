@@ -125,8 +125,6 @@ function draw() {
   fill(255);
   stroke(220, 155, 155);
   strokeWeight(4);
-  
-  textSize(constrain(text_size, 20, 90));
 
   if (text_size > 30) {
     text_size -= 1;
@@ -310,7 +308,7 @@ function draw() {
     if (d < sprite_size/2) {
       gifts.splice(i, 1);
       score += ceil(g.size);
-      text_size = text_size*1.2;
+      text_size = 45;
       state = "content"; 
       if (g.size > 60)
         reactionTimer = millis() +500; // Smile for 1.5 seconds
